@@ -13,7 +13,7 @@ public class Snake {
 		setTyleSize(tyleSize);
 		
 		// makes a snake of the informed size
-		int tempX = 1;
+		int tempX = 5;
 		for(int i = 0 ; i < size ; i++){
 			getBody().add(new SnakeBodyPart(tempX, 1, tyleSize, 1));
 			tempX++;	

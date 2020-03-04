@@ -7,7 +7,8 @@ public class Main {
 	public static final int WIDTH = 720, HEIGHT = 480;
     
 	public Main() {
-    	
+    	//ImageIcon img = new ImageIcon(getClass().getResource("fundo.png"));
+		//JLabel label = new JLabel(img);
     	JFrame frame = new JFrame();
     	GameScreen screen = new GameScreen();
     	
