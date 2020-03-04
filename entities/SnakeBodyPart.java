@@ -33,7 +33,7 @@ public class SnakeBodyPart {
 		else if(getColor() == 3){
 			g.setColor(Color.YELLOW);
 		}
-
+		// draw the snake square
         g.fillRect(x * getSquareSize(), y * getSquareSize(), getSquareSize(), getSquareSize());
     }
 	

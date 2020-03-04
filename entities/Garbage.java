@@ -2,20 +2,21 @@ package entities;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.image.BufferedImage;
 
 public class Garbage {
 	// attributes
 	private int x;
 	private int y;
-	private int squareSize;
 	private int type;
+	private BufferedImage image;
 
 	// constructor
-	public Garbage(int x, int y, int type,int squareSize) {
+	public Garbage(int x, int y, int type,BufferedImage image) {
 		setX(x);
 		setY(y);
-		setSquareSize(squareSize);
 		setType(type);
+		setImage(image);
 	}
 	
 	// drawn the garbage
@@ -33,21 +34,23 @@ public class Garbage {
 		else if(getType() == 3){
 			g.setColor(Color.YELLOW);
 		}
-	
-		g.fillRect(x * getSquareSize() , y * getSquareSize(), getSquareSize(), getSquareSize());
+	 
+		 g.fillRect(x * getSquareSize(), y * getSquareSize(), getSquareSize(), getSquareSize());
+		
 	}
 
 	// getters and setters	
-	public int getSquareSize() {
-		return this.squareSize;
-	}
 
-	public void setSquareSize(int squareSize) {
-		this.squareSize = squareSize;
-	}
-	
 	public int getType() {
 		return this.type;
+	}
+
+	private BufferedImage getImage() {
+		return this.image;
+	}
+
+	private void setImage(BufferedImage image) {
+		this.image = image;
 	}
 
 	public void setType(int type) {
@@ -69,5 +72,7 @@ public class Garbage {
 	public void setY(int y) {
 		this.y = y;
 	}
+	
+	public int getSquareSize() {return 20;}
 	
 }

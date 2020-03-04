@@ -29,18 +29,6 @@ public class Snake {
 		this.color = color;
 	}
 	
-	public void changeColor(){
-		setColor(getColor() + 1);
-		
-		if(getColor() > 3){
-			setColor(0);
-		}
-		// change the color of all snake body parts
-		for(SnakeBodyPart part : getBody()){
-			part.setColor(getColor());
-		}
-	}
-	
 	public ArrayList<SnakeBodyPart> getBody() {
 		return this.body;
 	}
