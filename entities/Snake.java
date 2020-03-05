@@ -27,6 +27,9 @@ public class Snake {
 
 	public void setColor(int color) {
 		this.color = color;
+		for(SnakeBodyPart bodyPart : getBody()){
+			bodyPart.setColor(this.getColor());
+		}
 	}
 	
 	public ArrayList<SnakeBodyPart> getBody() {

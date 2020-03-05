@@ -32,12 +32,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     
     // game movement and control variables 
     private boolean right = true, left = false, up = false, down =false,
-    		running = false, spaceBar = false;
+    		running = false;
     
     // imagens
     private BufferedImage backgroundImg;
     private BufferedImage headerImg;
-    private BufferedImage garbageImg;
    
     // constructor
     public GameScreen() {
@@ -50,7 +49,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         try {
 			backgroundImg = ImageIO.read(getClass().getResourceAsStream("/images/background.png"));
 			headerImg = ImageIO.read(getClass().getResourceAsStream("/images/header.png"));
-			garbageImg = ImageIO.read(getClass().getResourceAsStream("/images/garbage.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -62,12 +60,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	int yCoor = random.nextInt(Math.round(HEIGHT/SQUARESIZE));
     	if (yCoor <= 5) yCoor = 6;
     	int type = random.nextInt(4);
-		garbage = new Garbage(xCoor, yCoor, type, garbageImg);
+		garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
     }
     
     // tick method
-    public void tick() {
-    	
+    public void tick() {	
     	// movement the snake
     	snake.addBodyPart(xCoor, yCoor, SQUARESIZE);	
     	if(snake.getLength() > snakeSize) {
@@ -77,7 +74,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	// verify if the snake collects the garbage
     	if(xCoor == garbage.getX() && yCoor == garbage.getY()) {
     		// verify if the snake color is different of the garbage color
-    		if(snake.getColor() != garbage.getType()){
+    		if(snake.getColor() != garbage.getColor()){
     			stop("incorect color");
     			return;
     		}
@@ -98,7 +95,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
         
         // verify if the snake hits the walls
-        if(xCoor < 0 || xCoor > Math.round(WIDTH/SQUARESIZE) || yCoor < 5 || yCoor > Math.round(HEIGHT/SQUARESIZE)){
+        if(xCoor < 0 || xCoor >= Math.round(WIDTH/SQUARESIZE) || yCoor < 5 || yCoor >= Math.round(HEIGHT/SQUARESIZE)){
         	stop("hits wall");
         }
         
@@ -106,13 +103,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	if(right){
     		xCoor++;
     	}
-    	if(left){
+    	else if(left){
     		xCoor--;
     	}
-    	if(up){
+    	else if(up){
     		yCoor--;
     	}
-    	if(down){
+    	else if(down){
     		yCoor++;
     	}
     	
@@ -136,9 +133,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             g.drawLine(0, i * SQUARESIZE, WIDTH, i * SQUARESIZE);
         }
         
-        // paint the garbage
+        // draw the garbage in the screen
         garbage.draw(g);
-        
         
         // paint the snake
         for (int i = 0; i < snake.getLength(); i++) {
@@ -149,7 +145,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         g.drawImage(headerImg, 0, 0, this);
         
         // draw score
-        g.drawString("Pontos : " + (snakeSize - 3), 40, 30);
+        g.drawString("Pontos : " + (snakeSize - 3), 30, 30);
+        
+        // draw player name
+        g.drawString("<nome jogador>", 30, 71);
+        
     }
  
     public void start() {
@@ -169,7 +169,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             tick();
             repaint();
             
-            // delay of 100 milliseconds
         	try{
     			Thread.sleep(75);
     		} 
@@ -212,18 +211,22 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		}
 		
 		if(key == KeyEvent.VK_Q){
+			// red
 			snake.setColor(0);
 		}
 		
 		if(key == KeyEvent.VK_W){
+			// green
 			snake.setColor(1);
 		}
 		
 		if(key == KeyEvent.VK_E){
+			// blue
 			snake.setColor(2);
 		}
 		
 		if(key == KeyEvent.VK_R){
+			// yellow
 			snake.setColor(3);
 		}
 	}

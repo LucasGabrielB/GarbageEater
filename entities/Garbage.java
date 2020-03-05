@@ -1,60 +1,61 @@
 package entities;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 
 public class Garbage {
 	// attributes
 	private int x;
 	private int y;
-	private int type;
+	private int color;
+	private int squareSize;
 	private BufferedImage image;
-
+	
 	// constructor
-	public Garbage(int x, int y, int type,BufferedImage image) {
+	public Garbage(int x, int y, int color, int squareSize) {
 		setX(x);
 		setY(y);
-		setType(type);
-		setImage(image);
+		setColor(color);
+		setSquareSize(squareSize);
 	}
 	
-	// drawn the garbage
-	public void draw(Graphics g) {
-		// verify what is the current color  
-		if(getType() == 0){
-			g.setColor(Color.RED);
-		}
-		else if(getType() == 1){
-			g.setColor(Color.GREEN);
-		}
-		else if(getType() == 2){
-			g.setColor(Color.BLUE);
-		}
-		else if(getType() == 3){
-			g.setColor(Color.YELLOW);
-		}
-	 
-		 g.fillRect(x * getSquareSize(), y * getSquareSize(), getSquareSize(), getSquareSize());
-		
-	}
-
 	// getters and setters	
 
-	public int getType() {
-		return this.type;
+	public int getColor() {
+		return this.color;
+	}
+	
+	public void draw(Graphics g){
+		try {
+			if(getColor() == 0){
+				// red
+				image = ImageIO.read(getClass().getResourceAsStream("/images/redGarbage.png"));
+			}
+			else if(getColor() == 1){
+				// green
+				image = ImageIO.read(getClass().getResourceAsStream("/images/greenGarbage.png"));
+			}
+			else if(getColor() == 2){
+				// blue
+				image = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
+			}
+			else if(getColor() == 3){
+				// yellow
+				image = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
+			}
+			
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		// draw garbage in the game screen
+		g.drawImage(image, getX() * getSquareSize(), getY() * getSquareSize(), null);
 	}
 
-	private BufferedImage getImage() {
-		return this.image;
-	}
 
-	private void setImage(BufferedImage image) {
-		this.image = image;
-	}
-
-	public void setType(int type) {
-		this.type = type;
+	public void setColor(int color) {
+		this.color = color;
 	}
 
 	public int getX() {
@@ -73,6 +74,12 @@ public class Garbage {
 		this.y = y;
 	}
 	
-	public int getSquareSize() {return 20;}
+	public int getSquareSize() {
+		return this.squareSize;
+	}
 	
+	private void setSquareSize(int squareSize) {
+		this.squareSize = squareSize;
+	}
+
 }
