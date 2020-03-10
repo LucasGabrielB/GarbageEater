@@ -5,12 +5,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
-public class Garbage {
-	// attributes
-	private int x;
-	private int y;
-	private int color;
-	private int squareSize;
+public class Garbage extends SquareInTheScreen{
 	private BufferedImage image;
 	
 	// constructor
@@ -21,12 +16,7 @@ public class Garbage {
 		setSquareSize(squareSize);
 	}
 	
-	// getters and setters	
-
-	public int getColor() {
-		return this.color;
-	}
-	
+	// method to draw the garbage in the game screen
 	public void draw(Graphics g){
 		try {
 			if(getColor() == 0){
@@ -51,35 +41,6 @@ public class Garbage {
 		}
 		// draw garbage in the game screen
 		g.drawImage(image, getX() * getSquareSize(), getY() * getSquareSize(), null);
-	}
-
-
-	public void setColor(int color) {
-		this.color = color;
-	}
-
-	public int getX() {
-		return this.x;
-	}
-	
-	public void setX(int x) {
-		this.x = x;
-	}
-	
-	public int getY() {
-		return this.y;
-	}
-	
-	public void setY(int y) {
-		this.y = y;
-	}
-	
-	public int getSquareSize() {
-		return this.squareSize;
-	}
-	
-	private void setSquareSize(int squareSize) {
-		this.squareSize = squareSize;
 	}
 
 }

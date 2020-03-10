@@ -21,8 +21,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public static final int WIDTH = 720, HEIGHT = 480, SQUARESIZE = 20;
     
     // create the snake
-    private int xCoor = 5, yCoor = 5, snakeSize = 3;
-	Snake snake = new Snake(snakeSize, SQUARESIZE);
+    private int xCoor, yCoor, snakeSize;
+	Snake snake;
 	
 	// create the garbage
     private Garbage garbage;
@@ -31,10 +31,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private Random random = new Random();;
     
     // game movement and control variables 
-    private boolean right = true, left = false, up = false, down =false,
-    		running = false;
+    private boolean right, left, up, down, running;
     
-    // imagens
+    // Images
     private BufferedImage backgroundImg;
     private BufferedImage headerImg;
    
@@ -43,9 +42,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	setFocusable(true);   	
     	addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        drawNewGarbage();
+        
         start();
-    	// load the imagens
+    	
+        // load the images
         try {
 			backgroundImg = ImageIO.read(getClass().getResourceAsStream("/images/background.png"));
 			headerImg = ImageIO.read(getClass().getResourceAsStream("/images/header.png"));
@@ -150,11 +150,32 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         // draw player name
         g.drawString("<nome jogador>", 30, 71);
         
+        if(!running) {
+        	g.setColor(Color.RED);
+        	g.drawString("GAME OVER aperte [spaço] para reiniciar", WIDTH/2 - 100, HEIGHT/2);
+        }
+        
     }
  
     public void start() {
-        running = true;
-        Thread thread = new Thread(this);
+    	// reset movement variables
+    	up = false;
+		down = false;
+		left = false;
+		right = true;
+		
+		// reset snake variables
+    	xCoor = 5;
+    	yCoor = 5;
+    	snakeSize = 3;
+    	snake = new Snake(snakeSize, SQUARESIZE);
+    	
+    	drawNewGarbage();
+        
+    	// set running back to true
+    	running = true;
+        
+    	Thread thread = new Thread(this);
         thread.start();
     }
  
@@ -205,9 +226,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			right = false;
 			down = true;
 		}
-		
-		if(key == KeyEvent.VK_ESCAPE){
-			// TODO add exit to start screen
+
+		if(key == 32 && !running){
+			start();
 		}
 		
 		if(key == KeyEvent.VK_Q){
