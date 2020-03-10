@@ -2,8 +2,12 @@ package view;
 
 import java.awt.Color;
 import entities.Garbage;
+import entities.HealthBar;
+import entities.Player;
 import entities.Snake;
+import entities.SnakeBodyPart;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -33,15 +37,22 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     // game movement and control variables 
     private boolean right, left, up, down, running;
     
-    // Images
+    // images
     private BufferedImage backgroundImg;
     private BufferedImage headerImg;
+    
+    // create the player
+    private Player player;
+    
+    // create the health bar
+    private HealthBar healthBar;
    
     // constructor
-    public GameScreen() {
+    public GameScreen(Player player) {
     	setFocusable(true);   	
     	addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        this.player = player;
         
         start();
     	
@@ -66,21 +77,34 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     // tick method
     public void tick() {	
     	// movement the snake
-    	snake.addBodyPart(xCoor, yCoor, SQUARESIZE);	
+    	snake.addBodyPart(xCoor, yCoor);	
     	if(snake.getLength() > snakeSize) {
     		snake.getBody().remove(0); 	
         }
     	
     	// verify if the snake collects the garbage
     	if(xCoor == garbage.getX() && yCoor == garbage.getY()) {
+    		
     		// verify if the snake color is different of the garbage color
     		if(snake.getColor() != garbage.getColor()){
-    			stop("incorect color");
-    			return;
+    			
+    			// remove one heart of the life bar
+    			healthBar.takeDamage();
+    			
+    			// verify if the player don't have life
+    			if(!healthBar.isHaveLife()){
+        			stop("incorect color");
+        			return;
+    			}
+    			else{
+    				drawNewGarbage();
+    			}
     		}
-    		else{
+    		else{ 
+    			// if the color of the snake is the same of the garbage
 	    		snakeSize++;
-	    		drawNewGarbage(); 
+	    		drawNewGarbage();
+	    		player.setScore(player.getScore() + 1);
     		}
     	}
     	
@@ -137,24 +161,31 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         garbage.draw(g);
         
         // paint the snake
-        for (int i = 0; i < snake.getLength(); i++) {
-            snake.getBody().get(i).draw(g);
+        for (SnakeBodyPart bodyPart : snake.getBody()) {
+            bodyPart.draw(g);
         }
         // draw header image
         g.setColor(Color.BLACK);
         g.drawImage(headerImg, 0, 0, this);
         
-        // draw score
-        g.drawString("Pontos : " + (snakeSize - 3), 30, 30);
-        
         // draw player name
-        g.drawString("<nome jogador>", 30, 71);
+        g.drawString(player.getNickname(), 30, 30);
+        
+        // draw score
+        g.drawString("Pontos : " + player.getScore() , 30, 71);
+        
+        healthBar.draw(g);
         
         if(!running) {
+        	// TODO change death screen !
+        	g.setColor(Color.BLACK);
+        	g.fillRect( WIDTH/2 - 105, HEIGHT/2 - 50, 240, 100);
         	g.setColor(Color.RED);
-        	g.drawString("GAME OVER aperte [spaÃ§o] para reiniciar", WIDTH/2 - 100, HEIGHT/2);
+        	g.setFont(new Font("Arial", Font.BOLD, 11));
+        	g.drawString("GAME OVER aperte [espaço] para reiniciar", WIDTH/2 - 100, HEIGHT/2 - 10);
+        	g.drawString("Ou, [ESC] para voltar a tela inicial", WIDTH/2 - 70, HEIGHT/2 + 10);
         }
-        
+       
     }
  
     public void start() {
@@ -168,7 +199,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	xCoor = 5;
     	yCoor = 5;
     	snakeSize = 3;
-    	snake = new Snake(snakeSize, SQUARESIZE);
+    	snake = new Snake(SQUARESIZE);
+    	
+    	// reset player score
+    	player.setScore(0);
+    	
+    	// reset the health bar
+    	healthBar = new HealthBar(3, 500 ,50);
     	
     	drawNewGarbage();
         
@@ -180,7 +217,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     }
  
     public void stop(String why) {
-    	// TODO add death screen !!!
     	System.out.println(why);
     	running = false;
     }
@@ -191,7 +227,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             repaint();
             
         	try{
-    			Thread.sleep(75);
+    			Thread.sleep(100);
     		} 
         	catch(InterruptedException e) {
     			e.printStackTrace();
@@ -204,31 +240,40 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		int key = e.getKeyCode();
 		
 		if(key == KeyEvent.VK_RIGHT && !left) {
+			left = false;
 			up = false;
 			down = false;
 			right = true;
 		}
 		
 		if(key == KeyEvent.VK_LEFT && !right) {
+			right = false;
 			up = false;
 			down = false;
 			left = true;
 		}
 		
 		if(key == KeyEvent.VK_UP && !down) {
+			down = false;
 			left = false;
 			right = false;
 			up = true;
 		}
 		
 		if(key == KeyEvent.VK_DOWN && !up) {
+			up = false;
 			left = false;
 			right = false;
 			down = true;
 		}
 
-		if(key == 32 && !running){
+		if(key == KeyEvent.VK_SPACE && !running){
 			start();
+		}
+		
+		if(key == KeyEvent.VK_ESCAPE && !running){
+			// TODO add back to start screen
+			System.exit(0);
 		}
 		
 		if(key == KeyEvent.VK_Q){

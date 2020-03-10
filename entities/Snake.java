@@ -5,19 +5,12 @@ import java.util.ArrayList;
 public class Snake {
 	// attributes
 	private ArrayList<SnakeBodyPart> body = new ArrayList<>();
-	private int tyleSize;
+	private int squareSize;
 	private int color;
 
 	// constructor
-	public Snake(int size, int tyleSize){
-		setTyleSize(tyleSize);
-		
-		// makes a snake of the informed size
-		int tempX = 5;
-		for(int i = 0 ; i < size ; i++){
-			getBody().add(new SnakeBodyPart(tempX, 1, tyleSize, 1));
-			tempX++;	
-		}
+	public Snake(int squareSize){
+		setSquareSize(squareSize);
 	}
 	
 	// getters and setters
@@ -27,6 +20,7 @@ public class Snake {
 
 	public void setColor(int color) {
 		this.color = color;
+		// change the color of all snake body parts
 		for(SnakeBodyPart bodyPart : getBody()){
 			bodyPart.setColor(this.getColor());
 		}
@@ -36,16 +30,12 @@ public class Snake {
 		return this.body;
 	}
 	
-	public void setBody(ArrayList<SnakeBodyPart> body) {
-		this.body = body;
-	}
-	
-	public int getTyleSize() {
-		return this.tyleSize;
+	public int getSquareSize() {
+		return this.squareSize;
 	}
 
-	public void setTyleSize(int tyleSize) {
-		this.tyleSize = tyleSize;
+	public void setSquareSize(int squareSize) {
+		this.squareSize = squareSize;
 	}
 	
 	//  method that returns the snake size
@@ -53,8 +43,8 @@ public class Snake {
 		return this.getBody().size();
 	}
 	
-	// method to add a BodyPart to the snake
-	public void addBodyPart(int x, int y, int tyleSize){
-		getBody().add(new SnakeBodyPart(x, y, tyleSize, getColor()));
+	// method to add a new BodyPart to the snake
+	public void addBodyPart(int x, int y){
+		getBody().add(new SnakeBodyPart(x, y, getSquareSize(), getColor()));
 	}
 }

@@ -36,11 +36,12 @@ public class Garbage extends SquareInTheScreen{
 				image = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
 			}
 			
+			// draw garbage in the game screen
+			g.drawImage(image, getX() * getSquareSize(), getY() * getSquareSize(), null);
+			
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		// draw garbage in the game screen
-		g.drawImage(image, getX() * getSquareSize(), getY() * getSquareSize(), null);
 	}
 
 }
