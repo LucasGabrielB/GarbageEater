@@ -5,26 +5,42 @@ import entities.Player;
 
 public class Main {
 	
-	public static final int WIDTH = 720, HEIGHT = 480;
-	
-	// create the player
-	public Player player;
+	// create the frame
+	private JFrame frame;
     
-	public Main() {
-    	JFrame frame = new JFrame();
-    	player = new Player("Rogerinho piroca de foice");
-    	GameScreen screen = new GameScreen(player);
+	public void showMenuScreen(Player player) {
+		// create a new menu screen
+		MenuScreen menuScreen = new MenuScreen(player);
     	
-    	frame.add(screen);
+		frame = new JFrame();
+    	frame.add(menuScreen);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    	frame.setTitle("Garbage Drop");// TODO change game name !!!
+    	frame.setTitle("Garbage Eater");
     	frame.setResizable(false);
     	frame.pack();
     	frame.setLocationRelativeTo(null);
-    	frame.setVisible(true);  	
+    	frame.setVisible(true); 
     	
     }
+	
+	public void showGameScren(Player player){
+		// create a new game screen	
+    	GameScreen gameScreen = new GameScreen(player);
+		
+    	frame = new JFrame();
+    	frame.add(gameScreen);
+    	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	frame.setTitle("Garbage Eater");
+    	frame.setResizable(false);
+    	frame.pack();
+    	frame.setLocationRelativeTo(null);
+    	frame.setVisible(true); 
+		
+	}
+	
     public static void main(String[] args) {
-        new Main();
+    	Player player = new Player("Digite seu nome aqui!");
+    	new Main().showMenuScreen(player);
     }
+
 }

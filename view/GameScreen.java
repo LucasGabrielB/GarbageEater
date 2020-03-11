@@ -15,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Random;
 import javax.imageio.ImageIO;
+import javax.swing.JFrame;
 import javax.swing.JPanel;
  
 public class GameScreen extends JPanel implements Runnable, KeyListener {
@@ -49,10 +50,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
    
     // constructor
     public GameScreen(Player player) {
+    	this.player = player;
     	setFocusable(true);   	
     	addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        this.player = player;
+    	setVisible(true);
         
         start();
     	
@@ -141,6 +143,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     
     // render method
     public void paint(Graphics g) {
+    	
     	// clear the screen
     	g.clearRect(0, 0, WIDTH, HEIGHT);
     	
@@ -217,7 +220,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     }
  
     public void stop(String why) {
-    	System.out.println(why);
+    	// print why the snake die
+    	System.err.println(why);
     	running = false;
     }
  
@@ -246,21 +250,21 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			right = true;
 		}
 		
-		if(key == KeyEvent.VK_LEFT && !right) {
+		else if(key == KeyEvent.VK_LEFT && !right) {
 			right = false;
 			up = false;
 			down = false;
 			left = true;
 		}
 		
-		if(key == KeyEvent.VK_UP && !down) {
+		else if(key == KeyEvent.VK_UP && !down) {
 			down = false;
 			left = false;
 			right = false;
 			up = true;
 		}
 		
-		if(key == KeyEvent.VK_DOWN && !up) {
+		else if(key == KeyEvent.VK_DOWN && !up) {
 			up = false;
 			left = false;
 			right = false;
@@ -268,12 +272,15 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		}
 
 		if(key == KeyEvent.VK_SPACE && !running){
+			// restart the game
 			start();
 		}
 		
 		if(key == KeyEvent.VK_ESCAPE && !running){
-			// TODO add back to start screen
-			System.exit(0);
+			// back to main menu
+			removeAll();
+			dispose();
+			new Main().showMenuScreen(player);
 		}
 		
 		if(key == KeyEvent.VK_Q){
@@ -304,6 +311,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {	
 		
+	}
+	
+	public void dispose() {
+	    JFrame parent = (JFrame) this.getTopLevelAncestor();
+	    parent.dispose();
 	}
 
 }

@@ -6,7 +6,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Garbage extends SquareInTheScreen{
-	private BufferedImage image;
+	// attributes
+	private BufferedImage garbageImage;
 	
 	// constructor
 	public Garbage(int x, int y, int color, int squareSize) {
@@ -21,23 +22,23 @@ public class Garbage extends SquareInTheScreen{
 		try {
 			if(getColor() == 0){
 				// red
-				image = ImageIO.read(getClass().getResourceAsStream("/images/redGarbage.png"));
+				garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/redGarbage.png"));
 			}
 			else if(getColor() == 1){
 				// green
-				image = ImageIO.read(getClass().getResourceAsStream("/images/greenGarbage.png"));
+				garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/greenGarbage.png"));
 			}
 			else if(getColor() == 2){
 				// blue
-				image = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
+				garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
 			}
 			else if(getColor() == 3){
 				// yellow
-				image = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
+				garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
 			}
 			
-			// draw garbage in the game screen
-			g.drawImage(image, getX() * getSquareSize(), getY() * getSquareSize(), null);
+			// draw the garbage in the game screen
+			g.drawImage(garbageImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
 			
 		}catch(IOException e){
 			e.printStackTrace();
