@@ -2,19 +2,13 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.net.URL;
-
 import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -23,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
-import com.sun.javafx.tk.Toolkit;
 
 import entities.Player;
 
@@ -35,15 +28,28 @@ public class MenuScreen  extends JPanel{
     
     // create the player
     public Player player;
-    private Image backgroundImg;
-    private Image startButton;
-    private Image exitButton;
+    
+    // images
+    private BufferedImage backgroundImage;
+    private BufferedImage startButtonImage;
+    private BufferedImage exitButtonImage;
+    private BufferedImage helpButtonImage;
 	
 	public MenuScreen(Player player){
 		this.player = player;
 		setFocusable(true);
 		setLayout(null); 
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
+        
+        // read images
+        try {
+			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/menuBackground.gif"));
+			startButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/btnStart.png"));
+			exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/btnExit.png"));
+			helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/btnHelp.png"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
         
         
         // initializes all screen components
@@ -52,36 +58,38 @@ public class MenuScreen  extends JPanel{
         
 	public void initComponents() {	
 		// create the components
-		JButton playButton = new JButton(new ImageIcon("images/btnStart.png"));
-		JButton helpButton = new JButton(new ImageIcon("images/btnHelp.png"));
-		JButton quitButton = new JButton(new ImageIcon("images/btnExit.png"));
-		JLabel back = new JLabel(new ImageIcon("images/menuBackground.gif")); 
+		JButton playButton = new JButton(new ImageIcon(startButtonImage));
+		JButton helpButton = new JButton(new ImageIcon(helpButtonImage));
+		JButton exitButton = new JButton(new ImageIcon(exitButtonImage));
+		JLabel backgorund = new JLabel(new ImageIcon(backgroundImage)); 
 		JTextField playerNameTextField = new JTextField(player.getNickname(), 20);
+		
 		// define the position and size of the components
 		playerNameTextField.setBounds(40, 410, 200, 40);
 		playButton.setBounds(40, 250, 100, 40);
 		helpButton.setBounds(40, 300, 100, 40);
-		quitButton.setBounds(40, 350, 100, 40);
-		back.setBounds(0,0,720,480);
+		exitButton.setBounds(40, 350, 100, 40);
+		backgorund.setBounds(0,0,720,480);
 		
+		// define components properties
 		playButton.setOpaque(false);
 		playButton.setContentAreaFilled(false);
 		playButton.setBorderPainted(false);
 		helpButton.setOpaque(false);
 		helpButton.setContentAreaFilled(false);
 		helpButton.setBorderPainted(false);		
-		quitButton.setOpaque(false);
-		quitButton.setContentAreaFilled(false);
-		quitButton.setBorderPainted(false);
+		exitButton.setOpaque(false);
+		exitButton.setContentAreaFilled(false);
+		exitButton.setBorderPainted(false);
 		playerNameTextField.setOpaque(false);
 		playerNameTextField.setForeground(Color.white);
 		
 		// add the components in the screen
 		add(playerNameTextField);
-		add(quitButton);
+		add(exitButton);
 		add(playButton);
 		add(helpButton);
-		add(back);
+		add(backgorund);
 		
 		// method if the play button is pushed		
 		playButton.addActionListener(new ActionListener(){
@@ -105,8 +113,8 @@ public class MenuScreen  extends JPanel{
 			  }
 		}); 
 		
-		// method if the quit button is pushed
-		quitButton.addActionListener(new ActionListener(){  
+		// method if the exit button is pushed
+		exitButton.addActionListener(new ActionListener(){  
 			  public void actionPerformed(ActionEvent e){
 				  System.exit(0);  
 			  }
@@ -116,7 +124,7 @@ public class MenuScreen  extends JPanel{
 		// to prevent the text from exceeding the limit size
 		playerNameTextField.addKeyListener(new KeyAdapter() {
 		    public void keyTyped(KeyEvent e) {
-		    	// if the text size is greater than 20 doesn’t let the player type
+		    	// if the text size is greater than 20 doesnï¿½t let the player type
 		        if (playerNameTextField.getText().length() >= 20 )
 		            e.consume();
 		    }  
