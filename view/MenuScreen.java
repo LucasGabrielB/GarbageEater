@@ -1,15 +1,30 @@
 package view;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.net.URL;
+
+import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
+import com.sun.javafx.tk.Toolkit;
+
 import entities.Player;
 
 public class MenuScreen  extends JPanel{
@@ -20,6 +35,9 @@ public class MenuScreen  extends JPanel{
     
     // create the player
     public Player player;
+    private Image backgroundImg;
+    private Image startButton;
+    private Image exitButton;
 	
 	public MenuScreen(Player player){
 		this.player = player;
@@ -27,28 +45,46 @@ public class MenuScreen  extends JPanel{
 		setLayout(null); 
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
         
+        
         // initializes all screen components
         initComponents();      
 	}
-	
-	public void initComponents() {
+        
+	public void initComponents() {	
 		// create the components
-		JButton playButton = new JButton("Jogar");
-		JButton quitButton = new JButton("Sair");
+		JButton playButton = new JButton(new ImageIcon("images/btnStart.png"));
+		JButton helpButton = new JButton(new ImageIcon("images/btnHelp.png"));
+		JButton quitButton = new JButton(new ImageIcon("images/btnExit.png"));
+		JLabel back = new JLabel(new ImageIcon("images/menuBackground.gif")); 
 		JTextField playerNameTextField = new JTextField(player.getNickname(), 20);
-		
 		// define the position and size of the components
-		playerNameTextField.setBounds(10, 10, 200, 40);
-		playButton.setBounds(50, 100, 100, 40);
-		quitButton.setBounds(50, 150, 100, 40);
+		playerNameTextField.setBounds(40, 410, 200, 40);
+		playButton.setBounds(40, 250, 100, 40);
+		helpButton.setBounds(40, 300, 100, 40);
+		quitButton.setBounds(40, 350, 100, 40);
+		back.setBounds(0,0,720,480);
+		
+		playButton.setOpaque(false);
+		playButton.setContentAreaFilled(false);
+		playButton.setBorderPainted(false);
+		helpButton.setOpaque(false);
+		helpButton.setContentAreaFilled(false);
+		helpButton.setBorderPainted(false);		
+		quitButton.setOpaque(false);
+		quitButton.setContentAreaFilled(false);
+		quitButton.setBorderPainted(false);
+		playerNameTextField.setOpaque(false);
+		playerNameTextField.setForeground(Color.white);
 		
 		// add the components in the screen
 		add(playerNameTextField);
 		add(quitButton);
 		add(playButton);
+		add(helpButton);
+		add(back);
 		
-		// method if the play button is pushed
-		playButton.addActionListener(new ActionListener(){  
+		// method if the play button is pushed		
+		playButton.addActionListener(new ActionListener(){
 			  public void actionPerformed(ActionEvent e){
 				  String playerName = playerNameTextField.getText().trim();
 				  // check if the size of the player's name is not too short or too big
