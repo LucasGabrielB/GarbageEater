@@ -96,8 +96,9 @@ public class MenuScreen  extends JPanel{
 			  public void actionPerformed(ActionEvent e){
 				  String playerName = playerNameTextField.getText().trim();
 				  // check if the size of the player's name is not too short or too big
-				  if(playerName.length() < 3){
-					  JOptionPane.showMessageDialog(null, "Nome do jogador muito CURTO!", "ERRO:", 0);
+				  if(playerName.length() == 0){
+					  JOptionPane.showMessageDialog(null, "Digite um nome para o jogador", "ERRO:", 0);
+					  //TODO new WarningScreen("ERRO:",  "Digite um nome para o jogador");
 				  }
 				  
 				  else if(playerName.length() > 20){
