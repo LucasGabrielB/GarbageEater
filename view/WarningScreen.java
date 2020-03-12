@@ -37,7 +37,7 @@ public class WarningScreen extends JFrame{
 		JLabel messageLabel = new JLabel(message);
 		
 		// define components properties
-		okButton.setBounds(130, 65, 50, 30);
+		okButton.setBounds(128, 65, 55, 30);
 		messageLabel.setBounds(20, 20, 280, 100);
 		messageLabel.setVerticalAlignment(SwingConstants.TOP);
 		setFont(new Font("arial", Font.PLAIN, 10));

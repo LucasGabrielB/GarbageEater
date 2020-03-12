@@ -7,7 +7,6 @@ import entities.Player;
 import entities.Snake;
 import entities.SnakeBodyPart;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -39,8 +38,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private boolean right, left, up, down, running;
     
     // images
-    private BufferedImage backgroundImg;
-    private BufferedImage headerImg;
+    private BufferedImage backgroundImage;
+    private BufferedImage headerImage;
+    private BufferedImage deathImage;
     
     // create the player
     private Player player;
@@ -60,8 +60,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	
         // load the images
         try {
-			backgroundImg = ImageIO.read(getClass().getResourceAsStream("/images/background.png"));
-			headerImg = ImageIO.read(getClass().getResourceAsStream("/images/header.png"));
+			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/background.png"));
+			headerImage = ImageIO.read(getClass().getResourceAsStream("/images/header.png"));
+			deathImage = ImageIO.read(getClass().getResourceAsStream("/images/gameOver.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -148,7 +149,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	g.clearRect(0, 0, WIDTH+10, HEIGHT+10);
     	
     	// draw background image
-      	g.drawImage(backgroundImg, 0, 40, this);
+      	g.drawImage(backgroundImage, 0, 40, this);
     	
     	// paint the lines 
         g.setColor(new Color(62, 59, 53));
@@ -169,7 +170,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
         // draw header image
         g.setColor(Color.BLACK);
-        g.drawImage(headerImg, 0, 0, this);
+        g.drawImage(headerImage, 0, 0, this);
         
         // draw player name
         g.drawString(player.getNickname(), 30, 30);
@@ -180,13 +181,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         healthBar.draw(g);
         
         if(!running) {
-        	// TODO change death screen !
-        	g.setColor(Color.BLACK);
-        	g.fillRect( WIDTH/2 - 105, HEIGHT/2 - 50, 240, 100);
-        	g.setColor(Color.RED);
-        	g.setFont(new Font("Arial", Font.BOLD, 11));
-        	g.drawString("GAME OVER aperte [espaço] para reiniciar", WIDTH/2 - 100, HEIGHT/2 - 10);
-        	g.drawString("Ou, [ESC] para voltar a tela inicial", WIDTH/2 - 70, HEIGHT/2 + 10);
+        	g.drawImage(deathImage, WIDTH/2 - 105, HEIGHT/2 - 50, this);
         }
        
     }

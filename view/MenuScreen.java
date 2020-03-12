@@ -42,7 +42,7 @@ public class MenuScreen  extends JPanel{
         
         // read images
         try {
-			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/menuBackground.gif"));
+			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/menuBackground.png"));
 			startButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/btnStart.png"));
 			exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/btnExit.png"));
 			helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/btnHelp.png"));
@@ -59,7 +59,7 @@ public class MenuScreen  extends JPanel{
 		JButton playButton = new JButton(new ImageIcon(startButtonImage));
 		JButton helpButton = new JButton(new ImageIcon(helpButtonImage));
 		JButton exitButton = new JButton(new ImageIcon(exitButtonImage));
-		JLabel backgorund = new JLabel(new ImageIcon(backgroundImage)); 
+		JLabel backgorundLabel = new JLabel(new ImageIcon(backgroundImage));
 		JTextField playerNameTextField = new JTextField(player.getNickname(), 20);
 		
 		// define the position and size of the components
@@ -67,7 +67,7 @@ public class MenuScreen  extends JPanel{
 		playButton.setBounds(40, 250, 100, 40);
 		helpButton.setBounds(40, 300, 100, 40);
 		exitButton.setBounds(40, 350, 100, 40);
-		backgorund.setBounds(0,0,720,480);
+		backgorundLabel.setBounds(0,0,720,480);
 		
 		// define components properties
 		playButton.setOpaque(false);
@@ -87,7 +87,7 @@ public class MenuScreen  extends JPanel{
 		add(exitButton);
 		add(playButton);
 		add(helpButton);
-		add(backgorund);
+		add(backgorundLabel);
 		
 		// method if the play button is pushed		
 		playButton.addActionListener(new ActionListener(){
