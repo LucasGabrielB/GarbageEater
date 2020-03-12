@@ -145,7 +145,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void paint(Graphics g) {
     	
     	// clear the screen
-    	g.clearRect(0, 0, WIDTH, HEIGHT);
+    	g.clearRect(0, 0, WIDTH+10, HEIGHT+10);
     	
     	// draw background image
       	g.drawImage(backgroundImg, 0, 40, this);

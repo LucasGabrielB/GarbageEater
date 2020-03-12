@@ -13,7 +13,6 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -50,8 +49,7 @@ public class MenuScreen  extends JPanel{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        
-        
+           
         // initializes all screen components
         initComponents();      
 	}
@@ -95,14 +93,13 @@ public class MenuScreen  extends JPanel{
 		playButton.addActionListener(new ActionListener(){
 			  public void actionPerformed(ActionEvent e){
 				  String playerName = playerNameTextField.getText().trim();
-				  // check if the size of the player's name is not too short or too big
-				  if(playerName.length() == 0){
-					  JOptionPane.showMessageDialog(null, "Digite um nome para o jogador", "ERRO:", 0);
-					  //TODO new WarningScreen("ERRO:",  "Digite um nome para o jogador");
+				  // check if the size of the player typed a name
+				  if(playerName.length() == 0 || playerNameTextField.getText().equals("Digite seu nome aqui!")){
+					  new WarningScreen("ERRO:",  "Digite um nome para o jogador!");
 				  }
 				  
 				  else if(playerName.length() > 20){
-					  JOptionPane.showMessageDialog(null, "Nome do jogador muito GRANDE!", "ERRO:", 0);
+					  new WarningScreen("ERRO:", "Nome do jogador muito GRANDE!");
 				  }
 				  
 				  else{
