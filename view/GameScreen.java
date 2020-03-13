@@ -173,10 +173,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         g.drawImage(headerImage, 0, 0, this);
         
         // draw player name
-        g.drawString(player.getNickname(), 30, 30);
+        g.drawString(player.getNickname(), 13, 38);
         
         // draw score
-        g.drawString("Pontos : " + player.getScore() , 30, 71);
+        g.drawString("Pontos: " + player.getScore() , 13, 76);
         
         healthBar.draw(g);
         
