@@ -181,7 +181,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         healthBar.draw(g);
         
         if(!running) {
-        	g.drawImage(deathImage, WIDTH/2 - 105, HEIGHT/2 - 50, this);
+        	g.drawImage(deathImage, 180, 170, this);
         }
        
     }
