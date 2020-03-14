@@ -57,8 +57,8 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	
         // load the images
         try {
-			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/background.png"));
-			headerImage = ImageIO.read(getClass().getResourceAsStream("/images/header.png"));
+			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/gameScreenBackground.png"));
+			headerImage = ImageIO.read(getClass().getResourceAsStream("/images/gameScreenHeader.png"));
 			deathImage = ImageIO.read(getClass().getResourceAsStream("/images/gameOver.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
