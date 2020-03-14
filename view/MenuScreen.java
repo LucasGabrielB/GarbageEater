@@ -19,14 +19,14 @@ import javax.swing.JTextField;
 
 import entities.Player;
 
-public class MenuScreen  extends JPanel{
+public class MenuScreen extends JPanel{
 	private static final long serialVersionUID = 1L;
 	
 	// screen size constants
-    public static final int WIDTH = 720, HEIGHT = 480;
+    private static final int WIDTH = 720, HEIGHT = 480;
     
     // create the player
-    public Player player;
+    private Player player;
     
     // images
     private BufferedImage backgroundImage;
@@ -93,7 +93,7 @@ public class MenuScreen  extends JPanel{
 		playButton.addActionListener(new ActionListener(){
 			  public void actionPerformed(ActionEvent e){
 				  String playerName = playerNameTextField.getText().trim();
-				  // check if the size of the player typed a name
+				  // check if the player typed a name
 				  if(playerName.length() == 0 || playerNameTextField.getText().equals("Digite seu nome aqui!")){
 					  new WarningScreen("ERRO:",  "Digite um nome para o jogador!");
 				  }
@@ -106,7 +106,7 @@ public class MenuScreen  extends JPanel{
 					  player.setNickname(playerName);
 					  dispose();
 					  removeAll();
-					  new Main().showGameScren(player);
+					  new ShowGameScreen(player);
 				  }
 			  }
 		}); 
@@ -122,7 +122,7 @@ public class MenuScreen  extends JPanel{
 		// to prevent the text from exceeding the limit size
 		playerNameTextField.addKeyListener(new KeyAdapter() {
 		    public void keyTyped(KeyEvent e) {
-		    	// if the text size is greater than 20 doesn�t let the player type
+		    	// if the text size is greater than 20 does t let the player type
 		        if (playerNameTextField.getText().length() >= 20 )
 		            e.consume();
 		    }  
@@ -143,5 +143,5 @@ public class MenuScreen  extends JPanel{
 	    JFrame parent = (JFrame) this.getTopLevelAncestor();
 	    parent.dispose();
 	}
-	
+
 }

@@ -18,15 +18,18 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
  
 public class GameScreen extends JPanel implements Runnable, KeyListener {
- 
+	
     private static final long serialVersionUID = 1L;
     
     // screen size constants
-    public static final int WIDTH = 720, HEIGHT = 480, SQUARESIZE = 20;
+    private static final int WIDTH = 720, HEIGHT = 480, SQUARESIZE = 20;
     
     // create the snake
     private int xCoor, yCoor, snakeSize;
-	Snake snake;
+	private Snake snake;
+	
+    private Player player;
+    private HealthBar healthBar;
 	
 	// create the garbage
     private Garbage garbage;
@@ -41,12 +44,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private BufferedImage backgroundImage;
     private BufferedImage headerImage;
     private BufferedImage deathImage;
-    
-    // create the player
-    private Player player;
-    
-    // create the health bar
-    private HealthBar healthBar;
    
     // constructor
     public GameScreen(Player player) {
@@ -77,8 +74,58 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
     }
     
+    public void start() {
+    	// reset movement variables
+    	up = false;
+		down = false;
+		left = false;
+		right = true;
+		
+		// reset snake variables
+    	xCoor = 5;
+    	yCoor = 5;
+    	snakeSize = 3;
+    	snake = new Snake(SQUARESIZE);
+    	
+    	// reset player score
+    	player.setScore(0);
+    	
+    	// reset the health bar
+    	healthBar = new HealthBar(3, 500 ,50);
+    	
+    	drawNewGarbage();
+        
+    	// set running back to true
+    	running = true;
+        
+    	Thread thread = new Thread(this);
+        thread.start();
+    }
+ 
+    public void stop(String why) {
+    	// print why the snake die
+    	System.err.println(why);
+    	running = false;
+    }
+
+    public void run() {
+        while (running) {
+
+            tick();
+            repaint();
+     
+        	try{
+    			Thread.sleep(100);
+    		} 
+        	catch(InterruptedException e) {
+        		Thread.currentThread().interrupt();
+    		}         
+        }
+    }
+    
     // tick method
-    public void tick() {	
+    public void tick() {
+    	
     	// movement the snake
     	snake.addBodyPart(xCoor, yCoor);	
     	if(snake.getLength() > snakeSize) {
@@ -127,16 +174,16 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
         
         // variables for movement the snake
-    	if(right){
+    	if(right && !down && !up && !left){
     		xCoor++;
     	}
-    	else if(left){
+    	else if(left && !right && !down && !right){
     		xCoor--;
     	}
-    	else if(up){
+    	else if(up && !down && !right && !left){
     		yCoor--;
     	}
-    	else if(down){
+    	else if(down && !up && !right && !left){
     		yCoor++;
     	}
     	
@@ -168,6 +215,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         for (SnakeBodyPart bodyPart : snake.getBody()) {
             bodyPart.draw(g);
         }
+        
         // draw header image
         g.setColor(Color.BLACK);
         g.drawImage(headerImage, 0, 0, this);
@@ -185,59 +233,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
        
     }
- 
-    public void start() {
-    	// reset movement variables
-    	up = false;
-		down = false;
-		left = false;
-		right = true;
-		
-		// reset snake variables
-    	xCoor = 5;
-    	yCoor = 5;
-    	snakeSize = 3;
-    	snake = new Snake(SQUARESIZE);
-    	
-    	// reset player score
-    	player.setScore(0);
-    	
-    	// reset the health bar
-    	healthBar = new HealthBar(3, 500 ,50);
-    	
-    	drawNewGarbage();
-        
-    	// set running back to true
-    	running = true;
-        
-    	Thread thread = new Thread(this);
-        thread.start();
-    }
- 
-    public void stop(String why) {
-    	// print why the snake die
-    	System.err.println(why);
-    	running = false;
-    }
- 
-    public void run() {
-        while (running) {
-            tick();
-            repaint();
-            
-        	try{
-    			Thread.sleep(100);
-    		} 
-        	catch(InterruptedException e) {
-    			e.printStackTrace();
-    		}         
-        }
-    }
 
 	@Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		
+
 		if(key == KeyEvent.VK_RIGHT && !left) {
 			left = false;
 			up = false;
@@ -275,7 +275,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			// back to main menu
 			removeAll();
 			dispose();
-			new Main().showMenuScreen(player);
+			new ShowMenuScreen(player);
 		}
 		
 		if(key == KeyEvent.VK_Q){

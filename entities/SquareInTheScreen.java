@@ -8,35 +8,35 @@ public class SquareInTheScreen {
 	private int squareSize;
   
 	// getters and setters
-	public int getX() {
+	public final int getX() {
 		return this.x;
 	}
 
-	public void setX(int x) {
+	public final void setX(int x) {
 		this.x = x;
 	}
 
-	public int getY() {
+	public final int getY() {
 		return this.y;
 	}
 
-	public void setY(int y) {
+	public final void setY(int y) {
 		this.y = y;
 	}
 	
-	public int getSquareSize() {
+	public final int getSquareSize() {
 		return this.squareSize;
 	}
 
-	public void setSquareSize(int squareSize) {
+	public final void setSquareSize(int squareSize) {
 		this.squareSize = squareSize;
 	}
 	
-	public int getColor() {
+	public final int getColor() {
 		return this.color;
 	}
 	
-	public void setColor(int color) {
+	public final void setColor(int color) {
 		this.color = color;
 	}
 
