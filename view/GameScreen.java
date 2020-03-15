@@ -30,6 +30,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	
     private Player player;
     private HealthBar healthBar;
+    private int deathReason;
 	
 	// create the garbage
     private Garbage garbage;
@@ -44,6 +45,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private BufferedImage backgroundImage;
     private BufferedImage headerImage;
     private BufferedImage deathImage;
+    private BufferedImage deathReason1Image; // hits own body
+    private BufferedImage deathReason2Image; // hits wall
+    private BufferedImage deathReason3Image; // wrong color
    
     // constructor
     public GameScreen(Player player) {
@@ -60,6 +64,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/gameScreenBackground.png"));
 			headerImage = ImageIO.read(getClass().getResourceAsStream("/images/gameScreenHeader.png"));
 			deathImage = ImageIO.read(getClass().getResourceAsStream("/images/gameOver.png"));
+			deathReason1Image = ImageIO.read(getClass().getResourceAsStream("/images/hitsOwnBody.png"));
+			deathReason2Image = ImageIO.read(getClass().getResourceAsStream("/images/hitsWall.png"));
+			deathReason3Image = ImageIO.read(getClass().getResourceAsStream("/images/wrongColor.png"));
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -69,7 +77,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void drawNewGarbage(){
     	int xCoor = random.nextInt(Math.round(WIDTH/SQUARESIZE));
     	int yCoor = random.nextInt(Math.round(HEIGHT/SQUARESIZE));
-    	if (yCoor <= 5) yCoor = 6;
+    	if (yCoor < 6) yCoor = 6;
     	int type = random.nextInt(4);
 		garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
     }
@@ -102,20 +110,20 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         thread.start();
     }
  
-    public void stop(String why) {
-    	// print why the snake die
-    	System.err.println(why);
-    	running = false;
+    public void stop(int deathReason) {
+    	this.deathReason = deathReason;
+    	this.running = false;
     }
 
     public void run() {
         while (running) {
-
-            tick();
-            repaint();
-     
+    
         	try{
+        		// wait for 100 milliseconds
     			Thread.sleep(100);
+    			
+    			tick();
+                repaint();
     		} 
         	catch(InterruptedException e) {
         		Thread.currentThread().interrupt();
@@ -143,10 +151,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     			
     			// verify if the player don't have life
     			if(!healthBar.isHaveLife()){
-        			stop("incorect color");
+        			stop(3);
         			return;
     			}
     			else{
+    				System.out.println("novo lixo criado "+ garbage.getX()*20+ " "+garbage.getY()*20 );
     				drawNewGarbage();
     			}
     		}
@@ -162,15 +171,15 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         for(int i =0; i < snake.getLength(); i++) {
         	if(xCoor == snake.getBody().get(i).getX() && yCoor == snake.getBody().get(i).getY()) {
         		if(i != snake.getLength() - 1) {
-        			stop("hits own body");
+        			stop(1);
         			return;
         		}
         	}
         }
         
         // verify if the snake hits the walls
-        if(xCoor < 0 || xCoor >= Math.round(WIDTH/SQUARESIZE) || yCoor < 5 || yCoor >= Math.round(HEIGHT/SQUARESIZE)){
-        	stop("hits wall");
+        if(xCoor < 0 || xCoor > 35 || yCoor < 5 || yCoor > 22){
+        	stop(2);
         }
         
         // variables for movement the snake
@@ -228,8 +237,25 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         
         healthBar.draw(g);
         
+        // verify if the player dies, paint the game over images
         if(!running) {
         	g.drawImage(deathImage, 180, 170, this);
+        	
+        	if(deathReason == 1){
+        		// hits own body
+        		g.drawImage(deathReason1Image, 190, 192,this);
+        	}
+        	
+        	else if(deathReason == 2){
+        		// hits wall
+        		g.drawImage(deathReason2Image, 200, 193,this);
+        	}
+        	
+        	else if(deathReason == 3){
+        		// wrong color
+        		g.drawImage(deathReason3Image, 190, 193,this);
+        	}
+        
         }
        
     }

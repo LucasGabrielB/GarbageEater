@@ -15,8 +15,9 @@ public class ShowGameScreen {
     	frame.add(gameScreen);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setTitle("Garbage Eater");
-    	frame.setResizable(false);
     	frame.pack();
+    	frame.setSize(725, 488);
+    	frame.setResizable(false);
     	frame.setLocationRelativeTo(null);
     	frame.setVisible(true); 
 
