@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -14,9 +15,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
-
 import entities.Player;
 
 public class MenuScreen extends JPanel{
@@ -33,6 +33,7 @@ public class MenuScreen extends JPanel{
     private BufferedImage startButtonImage;
     private BufferedImage exitButtonImage;
     private BufferedImage helpButtonImage;
+    private BufferedImage rankImage;
 	
 	public MenuScreen(Player player){
 		this.player = player;
@@ -46,12 +47,14 @@ public class MenuScreen extends JPanel{
 			startButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/startButton.png"));
 			exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/exitButton.png"));
 			helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/helpButton.png"));
+			rankImage = ImageIO.read(getClass().getResourceAsStream("/images/rank.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
            
         // initializes all screen components
-        initComponents();      
+        initComponents();
+       
 	}
         
 	public void initComponents() {	
@@ -60,14 +63,18 @@ public class MenuScreen extends JPanel{
 		JButton helpButton = new JButton(new ImageIcon(helpButtonImage));
 		JButton exitButton = new JButton(new ImageIcon(exitButtonImage));
 		JLabel backgorundLabel = new JLabel(new ImageIcon(backgroundImage));
+		JLabel rankBackgroundLabel = new JLabel(new ImageIcon(rankImage));
 		JTextField playerNameTextField = new JTextField(player.getNickname(), 20);
+		JTextArea rankText = new JTextArea("1° -\n2° -\n3° -\n4° -\n5° -\n6° -\n7° -\n8° -\n9° -\n10° -");
 		
 		// define the position and size of the components
 		playerNameTextField.setBounds(40, 410, 200, 40);
 		playButton.setBounds(40, 250, 100, 40);
 		helpButton.setBounds(40, 300, 100, 40);
 		exitButton.setBounds(40, 350, 100, 40);
-		backgorundLabel.setBounds(0,0,720,480);
+		backgorundLabel.setBounds(0, 0, 720, 480);
+		rankBackgroundLabel.setBounds(440, 140, 275, 350);
+		rankText.setBounds(450, 200, 275, 350);
 		
 		// define components properties
 		playButton.setOpaque(false);
@@ -81,8 +88,14 @@ public class MenuScreen extends JPanel{
 		exitButton.setBorderPainted(false);
 		playerNameTextField.setOpaque(false);
 		playerNameTextField.setForeground(Color.white);
+		rankText.setOpaque(false);
+		rankText.setForeground(Color.WHITE);
+		rankText.setFont(new Font("Arial Bold", Font.ITALIC, 22));
+		rankText.setEnabled(false);
 		
 		// add the components in the screen
+		add(rankText);
+		add(rankBackgroundLabel);
 		add(playerNameTextField);
 		add(exitButton);
 		add(playButton);

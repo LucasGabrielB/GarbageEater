@@ -80,6 +80,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	if (yCoor < 6) yCoor = 6;
     	int type = random.nextInt(4);
 		garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
+		
     }
     
     public void start() {
@@ -116,7 +117,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     }
 
     public void run() {
-        while (running) {
+        while(running) {
     
         	try{
         		// wait for 100 milliseconds
@@ -155,7 +156,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         			return;
     			}
     			else{
-    				System.out.println("novo lixo criado "+ garbage.getX()*20+ " "+garbage.getY()*20 );
     				drawNewGarbage();
     			}
     		}
