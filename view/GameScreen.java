@@ -34,6 +34,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	
 	// create the garbage
     private Garbage garbage;
+    private long garbageDelayTime = System.currentTimeMillis();
     
     // new random generator
     private Random random = new Random();;
@@ -79,33 +80,32 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	int yCoor = random.nextInt(Math.round(HEIGHT/SQUARESIZE));
     	if (yCoor < 6) yCoor = 6;
     	int type = random.nextInt(4);
-		garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
+		this.garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
+		this.garbageDelayTime = System.currentTimeMillis();
 		
     }
     
     public void start() {
     	// reset movement variables
-    	up = false;
-		down = false;
-		left = false;
-		right = true;
+    	resetMovement();
+		this.right = true;
 		
 		// reset snake variables
-    	xCoor = 5;
-    	yCoor = 5;
-    	snakeSize = 3;
-    	snake = new Snake(SQUARESIZE);
+    	this.xCoor = 5;
+    	this.yCoor = 5;
+    	this.snakeSize = 3;
+    	this.snake = new Snake(SQUARESIZE);
     	
     	// reset player score
-    	player.setScore(0);
+    	this.player.setScore(0);
     	
     	// reset the health bar
-    	healthBar = new HealthBar(3, 500 ,50);
+    	this.healthBar = new HealthBar(3, 500 ,50);
     	
     	drawNewGarbage();
         
     	// set running back to true
-    	running = true;
+    	this.running = true;
         
     	Thread thread = new Thread(this);
         thread.start();
@@ -115,21 +115,27 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	this.deathReason = deathReason;
     	this.running = false;
     }
-
-    public void run() {
-        while(running) {
     
-        	try{
-        		// wait for 100 milliseconds
-    			Thread.sleep(100);
-    			
+    public void run() {
+    	long delayTime = System.currentTimeMillis();
+     
+    	while(running) {
+    		// get current time in milliseconds
+        	long currentTime = System.currentTimeMillis();
+        	
+        	// if the trash stays on the screen for more than 7 seconds draws a new garbage
+            if (currentTime - garbageDelayTime >= 7000){
+            	garbageDelayTime = currentTime;
+            	drawNewGarbage();
+            }
+            
+            // if pass 100 milliseconds update game
+            if (currentTime - delayTime >= 101){
+            	delayTime = currentTime;
+            	
     			tick();
-                repaint();
-    		} 
-        	catch(InterruptedException e) {
-        		Thread.currentThread().interrupt();
-        		super.repaint();
-    		}         
+    			repaint();
+            }
         }
     }
     
@@ -258,70 +264,70 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
        
     }
-
-	@Override
+	
+    @Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		
+		switch(key){
+		
+			case KeyEvent.VK_RIGHT:
+				resetMovement();
+				this.right = true;
+				break;
+			
+			case KeyEvent.VK_LEFT:
+				resetMovement();
+				this.left = true;
+				break;
+				
+			case KeyEvent.VK_UP:
+				resetMovement();
+				this.up = true;
+				break;
+				
+			case KeyEvent.VK_DOWN:
+				resetMovement();
+				this.down = true;
+				break;
+				
+			case KeyEvent.VK_SPACE:
+				if(!running){
+					// restart the game
+					start();
+				}
+				break;
+			
+			case KeyEvent.VK_ESCAPE:
+				if(!running){
+					// back to main menu
+					removeAll();
+					dispose();
+					new ShowMenuScreen(player);
+				}
+				break;
+				
+			case KeyEvent.VK_Q:
+				// red
+				snake.setColor(0);
+				break;
+			
+			case KeyEvent.VK_W:
+				// green
+				snake.setColor(1);
+				break;
+				
+			case KeyEvent.VK_E:
+				// blue
+				snake.setColor(2);
+				break;
+				
+			case KeyEvent.VK_R:
+				// yellow
+				snake.setColor(3);
+				break;
+		}
 
-		if(key == KeyEvent.VK_RIGHT && !left) {
-			left = false;
-			up = false;
-			down = false;
-			right = true;
-		}
-		
-		else if(key == KeyEvent.VK_LEFT && !right) {
-			right = false;
-			up = false;
-			down = false;
-			left = true;
-		}
-		
-		else if(key == KeyEvent.VK_UP && !down) {
-			down = false;
-			left = false;
-			right = false;
-			up = true;
-		}
-		
-		else if(key == KeyEvent.VK_DOWN && !up) {
-			up = false;
-			left = false;
-			right = false;
-			down = true;
-		}
-
-		if(key == KeyEvent.VK_SPACE && !running){
-			// restart the game
-			start();
-		}
-		
-		if(key == KeyEvent.VK_ESCAPE && !running){
-			// back to main menu
-			removeAll();
-			dispose();
-			new ShowMenuScreen(player);
-		}
-		
-		if(key == KeyEvent.VK_Q){
-			// red
-			snake.setColor(0);
-		}
-		
-		if(key == KeyEvent.VK_W){
-			// green
-			snake.setColor(1);
-		}
-		
-		if(key == KeyEvent.VK_E){
-			// blue
-			snake.setColor(2);
-		}
-		
-		if(key == KeyEvent.VK_R){
-			// yellow
-			snake.setColor(3);
-		}
 	}
 	
 	@Override
@@ -331,6 +337,14 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {	
 		
+	}
+	
+	// set all movement variables to false
+	public void resetMovement(){
+		this.up = false;
+		this.left = false;
+		this.right = false;
+		this.down = false;
 	}
 	
 	public void dispose() {
