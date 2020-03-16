@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.Color;
+
+import entities.Direction;
 import entities.Garbage;
 import entities.HealthBar;
 import entities.Player;
@@ -12,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -19,15 +22,16 @@ import javax.swing.JPanel;
  
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 	
-    private static final long serialVersionUID = 1L;
-    
-    // screen size constants
+	private static final long serialVersionUID = 633444525002781659L;
+
+	// screen size constants
     private static final int WIDTH = 720, HEIGHT = 480, SQUARESIZE = 20;
     
     // create the snake
     private int xCoor, yCoor, snakeSize;
 	private Snake snake;
 	
+	// create the player
     private Player player;
     private HealthBar healthBar;
     private int deathReason;
@@ -39,8 +43,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     // new random generator
     private Random random = new Random();;
     
-    // game movement and control variables 
-    private boolean right, left, up, down, running;
+    // game movement and directions control
+    private LinkedList<Direction> directions;
+    private boolean running;
     
     // images
     private BufferedImage backgroundImage;
@@ -86,9 +91,9 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     }
     
     public void start() {
-    	// reset movement variables
-    	resetMovement();
-		this.right = true;
+    	// reset movement, set snake to move right
+    	this.directions = new LinkedList<>();
+		directions.add(Direction.Right);
 		
 		// reset snake variables
     	this.xCoor = 5;
@@ -130,7 +135,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             }
             
             // if pass 100 milliseconds update game
-            if (currentTime - delayTime >= 101){
+            if (currentTime - delayTime >= 90){
             	delayTime = currentTime;
             	
     			tick();
@@ -187,19 +192,31 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         	stop(2);
         }
         
-        // variables for movement the snake
-    	if(right && !down && !up && !left){
-    		xCoor++;
-    	}
-    	else if(left && !right && !down && !right){
-    		xCoor--;
-    	}
-    	else if(up && !down && !right && !left){
-    		yCoor--;
-    	}
-    	else if(down && !up && !right && !left){
-    		yCoor++;
-    	}
+        // movement the snake
+        Direction direction = directions.peekFirst();
+        
+        switch (direction) {
+		case Up:
+			yCoor--;
+			break;
+
+		case Down:
+			yCoor++;
+			break;
+			
+		case Right:
+			xCoor++;
+    		break;
+    		
+		case Left:
+			xCoor--;
+    		break;
+		}
+        
+		 // if more than one direction is in the queue, poll it to read new input
+        if(directions.size() > 1) {
+			directions.poll();
+		}
     	
     }
     
@@ -268,27 +285,35 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     @Override
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
+		Direction last = directions.peekLast();
 		
 		switch(key){
 		
-			case KeyEvent.VK_RIGHT:
-				resetMovement();
-				this.right = true;
+			case KeyEvent.VK_RIGHT:				
+				if(last != Direction.Left && last != Direction.Right) {
+					directions.addLast(Direction.Right);
+				}
+				
 				break;
 			
-			case KeyEvent.VK_LEFT:
-				resetMovement();
-				this.left = true;
+			case KeyEvent.VK_LEFT:			
+				if(last != Direction.Left && last != Direction.Right) {
+					directions.addLast(Direction.Left);
+				}
+				
 				break;
 				
-			case KeyEvent.VK_UP:
-				resetMovement();
-				this.up = true;
+			case KeyEvent.VK_UP:		
+				if(last != Direction.Down && last != Direction.Up) {
+					directions.addLast(Direction.Up);
+				}
 				break;
 				
-			case KeyEvent.VK_DOWN:
-				resetMovement();
-				this.down = true;
+			case KeyEvent.VK_DOWN:		
+				if(last != Direction.Down && last != Direction.Up) {
+					directions.addLast(Direction.Down);
+				}
+				
 				break;
 				
 			case KeyEvent.VK_SPACE:
@@ -337,14 +362,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	@Override
 	public void keyTyped(KeyEvent arg0) {	
 		
-	}
-	
-	// set all movement variables to false
-	public void resetMovement(){
-		this.up = false;
-		this.left = false;
-		this.right = false;
-		this.down = false;
 	}
 	
 	public void dispose() {

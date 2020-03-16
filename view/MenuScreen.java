@@ -20,8 +20,9 @@ import javax.swing.JTextField;
 import entities.Player;
 
 public class MenuScreen extends JPanel {
-	private static final long serialVersionUID = 1L;
 	
+	private static final long serialVersionUID = 1624753302264316845L;
+
 	// screen size constants
     private static final int WIDTH = 720, HEIGHT = 480;
     
