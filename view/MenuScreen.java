@@ -112,7 +112,7 @@ public class MenuScreen extends JPanel {
 					  new WarningScreen("ERRO:",  "Digite um nome para o jogador!");
 				  }
 				  
-				  else if(playerName.length() > 20){
+				  else if(playerName.length() > 15){
 					  new WarningScreen("ERRO:", "Nome do jogador muito GRANDE!");
 				  }
 				  
@@ -138,7 +138,7 @@ public class MenuScreen extends JPanel {
 		playerNameTextField.addKeyListener(new KeyAdapter() {
 		    public void keyTyped(KeyEvent e) {
 		    	// if the text size is greater than 20 does t let the player type
-		        if (playerNameTextField.getText().length() >= 20 )
+		        if (playerNameTextField.getText().length() >= 15 )
 		            e.consume();
 		    }  
 		});

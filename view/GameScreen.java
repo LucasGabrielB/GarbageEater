@@ -9,6 +9,7 @@ import entities.Player;
 import entities.Snake;
 import entities.SnakeBodyPart;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -84,6 +85,16 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	int xCoor = random.nextInt(Math.round(WIDTH/SQUARESIZE));
     	int yCoor = random.nextInt(Math.round(HEIGHT/SQUARESIZE));
     	if (yCoor < 6) yCoor = 6;
+    	
+    	// check if the garbage will spawn in a place where the snake is
+    	for (SnakeBodyPart bodyPart : snake.getBody()) {
+    		//if so generate another garbage
+            if(xCoor == bodyPart.getX() && yCoor == bodyPart.getY()){
+            	drawNewGarbage();
+            	return;
+             }
+    	}
+    	
     	int type = random.nextInt(4);
 		this.garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
 		this.garbageDelayTime = System.currentTimeMillis();
@@ -135,7 +146,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             }
             
             // if pass 100 milliseconds update game
-            if (currentTime - delayTime >= 90){
+            if (currentTime - delayTime >= 100){
             	delayTime = currentTime;
             	
     			tick();
@@ -240,7 +251,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
         
         // draw the garbage in the screen
-        garbage.draw(g);
+        garbage.draw(g, this);
         
         // paint the snake
         for (SnakeBodyPart bodyPart : snake.getBody()) {
@@ -248,15 +259,15 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
         
         // draw header image
-        g.setColor(Color.BLACK);
         g.drawImage(headerImage, 0, 0, this);
         
-        // draw player name
+        // draw player name and score
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Arial", Font.BOLD, 12));
         g.drawString(player.getNickname(), 13, 38);
+        g.drawString("Score: " + player.getScore() , 13, 76);
         
-        // draw score
-        g.drawString("Pontos: " + player.getScore() , 13, 76);
-        
+        // draw health bar
         healthBar.draw(g);
         
         // verify if the player dies, paint the game over images
@@ -292,15 +303,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			case KeyEvent.VK_RIGHT:				
 				if(last != Direction.Left && last != Direction.Right) {
 					directions.addLast(Direction.Right);
-				}
-				
+				}	
 				break;
 			
 			case KeyEvent.VK_LEFT:			
 				if(last != Direction.Left && last != Direction.Right) {
 					directions.addLast(Direction.Left);
 				}
-				
 				break;
 				
 			case KeyEvent.VK_UP:		
@@ -313,7 +322,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				if(last != Direction.Down && last != Direction.Up) {
 					directions.addLast(Direction.Down);
 				}
-				
 				break;
 				
 			case KeyEvent.VK_SPACE:
@@ -363,7 +371,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public void keyTyped(KeyEvent arg0) {	
 		
 	}
-	
+	// method to dispose this JPanel
 	public void dispose() {
 	    JFrame parent = (JFrame) this.getTopLevelAncestor();
 	    parent.dispose();
