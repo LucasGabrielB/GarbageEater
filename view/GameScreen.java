@@ -128,6 +128,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     		} 
         	catch(InterruptedException e) {
         		Thread.currentThread().interrupt();
+        		super.repaint();
     		}         
         }
     }
@@ -168,12 +169,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	}
     	
     	// verify if the snake hits her self
-        for(int i =0; i < snake.getLength(); i++) {
+        for(int i = snake.getLength() - 2; i >= 0; i--) {
         	if(xCoor == snake.getBody().get(i).getX() && yCoor == snake.getBody().get(i).getY()) {
-        		if(i != snake.getLength() - 1) {
-        			stop(1);
-        			return;
-        		}
+    			stop(1);
+    			break;
         	}
         }
         
@@ -222,7 +221,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         
         // paint the snake
         for (SnakeBodyPart bodyPart : snake.getBody()) {
-            bodyPart.draw(g);
+            bodyPart.draw(g, this);
         }
         
         // draw header image

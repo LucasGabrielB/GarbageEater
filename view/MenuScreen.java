@@ -19,7 +19,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import entities.Player;
 
-public class MenuScreen extends JPanel{
+public class MenuScreen extends JPanel {
 	private static final long serialVersionUID = 1L;
 	
 	// screen size constants
@@ -53,8 +53,7 @@ public class MenuScreen extends JPanel{
 		}
            
         // initializes all screen components
-        initComponents();
-       
+        initComponents();     
 	}
         
 	public void initComponents() {	
@@ -106,6 +105,7 @@ public class MenuScreen extends JPanel{
 		playButton.addActionListener(new ActionListener(){
 			  public void actionPerformed(ActionEvent e){
 				  String playerName = playerNameTextField.getText().trim();
+				  
 				  // check if the player typed a name
 				  if(playerName.length() == 0 || playerNameTextField.getText().equals("Digite seu nome aqui!")){
 					  new WarningScreen("ERRO:",  "Digite um nome para o jogador!");
@@ -121,6 +121,7 @@ public class MenuScreen extends JPanel{
 					  removeAll();
 					  new ShowGameScreen(player);
 				  }
+					
 			  }
 		}); 
 		
@@ -149,6 +150,7 @@ public class MenuScreen extends JPanel{
                 }
 			}
 		});
+		
 	}
 	
 	// method to dispose this JPanel

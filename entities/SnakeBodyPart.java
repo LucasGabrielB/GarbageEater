@@ -2,6 +2,7 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
@@ -18,7 +19,7 @@ public class SnakeBodyPart extends SquareInTheScreen {
 	}
 
 	// draw method
-	public void draw(Graphics g) {
+	public void draw(Graphics g, ImageObserver imageObserver) {
 		// verify what is the current color 
 		try {
 			if(getColor() == 0){
@@ -39,7 +40,7 @@ public class SnakeBodyPart extends SquareInTheScreen {
 			}
 			
 			// draw the snake body part in the game screen
-			g.drawImage(snakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
+			g.drawImage(snakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 			
 		} catch (IOException e) {
 			e.printStackTrace();
