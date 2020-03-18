@@ -1,15 +1,17 @@
 package view;
 
 import javax.swing.JFrame;
+
+import database.DatabaseConnection;
 import entities.Player;
 
 public class ShowMenuScreen {
 	// create the frame
 	private JFrame frame;
     
-	public ShowMenuScreen(Player player) {
+	public ShowMenuScreen(Player player, DatabaseConnection databaseConnection) {
 		// create a new menu screen
-		MenuScreen menuScreen = new MenuScreen(player);
+		MenuScreen menuScreen = new MenuScreen(player, databaseConnection);
     	
 		frame = new JFrame();
     	frame.add(menuScreen);

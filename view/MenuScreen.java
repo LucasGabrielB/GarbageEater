@@ -9,6 +9,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -17,6 +19,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import database.DatabaseConnection;
 import entities.Player;
 
 public class MenuScreen extends JPanel {
@@ -35,8 +39,15 @@ public class MenuScreen extends JPanel {
     private BufferedImage exitButtonImage;
     private BufferedImage helpButtonImage;
     private BufferedImage rankImage;
+    
+    // database connection
+    private DatabaseConnection databaseConnection;
+    
+    private ArrayList<Player> rankTop10;
+    private String rankTop10Text = "";
 	
-	public MenuScreen(Player player){
+    public MenuScreen(Player player, DatabaseConnection databaseConnection){
+    	this.databaseConnection = databaseConnection;
 		this.player = player;
 		setFocusable(true);
 		setLayout(null); 
@@ -49,10 +60,29 @@ public class MenuScreen extends JPanel {
 			exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/exitButton.png"));
 			helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/helpButton.png"));
 			rankImage = ImageIO.read(getClass().getResourceAsStream("/images/rank.png"));
-		} catch (IOException e) {
+		
+        } 
+        
+        catch (IOException e) {
 			e.printStackTrace();
-		}
-           
+		
+        }
+        
+        rankTop10 = databaseConnection.getTop10();
+        
+        if(rankTop10.isEmpty()){
+        	rankTop10Text = "Erro:\n Impossivel conectar\n ao banco de dados!";
+        }
+        
+        else{
+        	for(int i = 0; i < rankTop10.size() ; i++){
+            	rankTop10Text += i+1 +"°  " 
+            		+ rankTop10.get(i).getNickname() + " - " 
+            		+ rankTop10.get(i).getScore() + "\n";
+            }
+        
+        }
+        
         // initializes all screen components
         initComponents();     
 	}
@@ -65,8 +95,8 @@ public class MenuScreen extends JPanel {
 		JLabel backgorundLabel = new JLabel(new ImageIcon(backgroundImage));
 		JLabel rankBackgroundLabel = new JLabel(new ImageIcon(rankImage));
 		JTextField playerNameTextField = new JTextField(player.getNickname(), 20);
-		JTextArea rankText = new JTextArea("1° -\n2° -\n3° -\n4° -\n5° -\n6° -\n7° -\n8° -\n9° -\n10° -");
-		
+		JTextArea rankText = new JTextArea(rankTop10Text);
+				
 		// define the position and size of the components
 		playerNameTextField.setBounds(40, 410, 200, 40);
 		playButton.setBounds(40, 250, 100, 40);
@@ -120,7 +150,7 @@ public class MenuScreen extends JPanel {
 					  player.setNickname(playerName);
 					  dispose();
 					  removeAll();
-					  new ShowGameScreen(player);
+					  new ShowGameScreen(player, databaseConnection);
 				  }
 					
 			  }

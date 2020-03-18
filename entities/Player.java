@@ -1,14 +1,22 @@
 package entities;
 
 public class Player {
-
+	// attributes
 	private int score;
 	private String nickname;
 	
+	// constructor
 	public Player(String nickname){
 		setNickname(nickname);
 	}
 	
+	// constructor 
+	public Player(String nickname, int score){
+		this(nickname);
+		setScore(score);
+	}
+	
+	// getters and setters
 	public int getScore() {
 		return this.score;
 	}

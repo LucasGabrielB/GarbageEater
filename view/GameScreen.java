@@ -20,6 +20,8 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+
+import database.DatabaseConnection;
  
 public class GameScreen extends JPanel implements Runnable, KeyListener {
 	
@@ -55,9 +57,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private BufferedImage deathReason1Image; // hits own body
     private BufferedImage deathReason2Image; // hits wall
     private BufferedImage deathReason3Image; // wrong color
+    
+    // database connection
+    private DatabaseConnection databaseConnection;
    
     // constructor
-    public GameScreen(Player player) {
+    public GameScreen(Player player, DatabaseConnection databaseConnection) {
+    	this.databaseConnection = databaseConnection;
     	this.player = player;
     	setFocusable(true);   	
     	addKeyListener(this);
@@ -128,6 +134,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     }
  
     public void stop(int deathReason) {
+    	databaseConnection.postPlayer(player);
     	this.deathReason = deathReason;
     	this.running = false;
     }
@@ -336,7 +343,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 					// back to main menu
 					removeAll();
 					dispose();
-					new ShowMenuScreen(player);
+					new ShowMenuScreen(this.player, this.databaseConnection);
 				}
 				break;
 				
