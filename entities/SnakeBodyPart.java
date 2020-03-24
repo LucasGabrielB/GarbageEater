@@ -7,6 +7,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class SnakeBodyPart extends SquareInTheScreen {
+	// attributes
+	private Colors color;
+	
 	// images
 	private BufferedImage redSnakeBodyPartImage;
 	private BufferedImage greenSnakeBodyPartImage;
@@ -14,13 +17,11 @@ public class SnakeBodyPart extends SquareInTheScreen {
 	private BufferedImage yellowSnakeBodyPartImage;
 	
 	// constructor
-	public SnakeBodyPart(int x, int y, int squareSize, int color){
-		setX(x);
-		setY(y);
-		setSquareSize(squareSize);
+	public SnakeBodyPart(int x, int y, int squareSize, Colors color){
+		super(x, y, squareSize);
 		setColor(color);
-		
 		openImages();
+	
 	}
 
 	// draw the snake body part in the game screen
@@ -28,35 +29,33 @@ public class SnakeBodyPart extends SquareInTheScreen {
 		
 		try{
 			switch (getColor()) {
-				case 0:
-					// red
+				case RED:
 					g.drawImage(this.redSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 					
-				case 1:
-					// green
+				case GREEN:
 					g.drawImage(this.greenSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 				
-				case 2:
-					// blue
+				case BLUE:
 					g.drawImage(this.blueSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 				
-				case 3:
-					// yellow
+				case YELLOW:
 					g.drawImage(this.yellowSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;	
 			
 			}
-		} catch (Exception e) {
+		
+		} 
+		catch (Exception e) {
 			// if any error occurred calls the method again
 			this.draw(g, imageObserver);
 
 		}
     
 	}
-	
+
 	// method to load snake body part images
 	public void openImages(){
 		try {
@@ -65,11 +64,22 @@ public class SnakeBodyPart extends SquareInTheScreen {
 			this.blueSnakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/blueSnakeBodyPart.png"));
 			this.yellowSnakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowSnakeBodyPart.png"));
 		
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		
 		}
 		
+	}
+	
+	// getters and setters
+	public Colors getColor() {
+		return this.color;
+	
+	}
+
+	public void setColor(Colors color) {
+		this.color = color;
 	}
 
 }

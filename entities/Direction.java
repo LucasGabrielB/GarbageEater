@@ -2,6 +2,6 @@ package entities;
 
 public enum Direction {
 
-	Up, Right, Down, Left
+	UP, RIGHT, DOWN, LEFT
 
 }

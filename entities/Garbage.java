@@ -7,6 +7,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Garbage extends SquareInTheScreen{
+	// attributes
+	private Colors color;
+	
 	// images
 	private BufferedImage redGarbageImage;
 	private BufferedImage greenGarbageImage;
@@ -14,12 +17,11 @@ public class Garbage extends SquareInTheScreen{
 	private BufferedImage yellowGarbageImage;
 	
 	// constructor
-	public Garbage(int x, int y, int color, int squareSize) {
-		setX(x);
-		setY(y);
+	public Garbage(int x, int y, Colors color, int squareSize) {
+		super(x, y, squareSize);
 		setColor(color);
-		setSquareSize(squareSize);
 		openImages();
+	
 	}
 	
 	// method to draw the garbage in the game screen
@@ -27,30 +29,28 @@ public class Garbage extends SquareInTheScreen{
 		
 		try{
 			switch (getColor()) {
-				case 0:
-					// red
+				case RED:
 					g.drawImage(this.redGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 				
-				case 1:
-					// green
+				case GREEN:
 					g.drawImage(this.greenGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 				
-				case 2:
-					// blue
+				case BLUE:
 					g.drawImage(this.blueGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 				
-				case 3:
-					// yellow
+				case YELLOW:
 					g.drawImage(this.yellowGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
 					break;
 	
 			}
-		} catch (Exception e) {
+		} 
+		catch (Exception e) {
 			// if any error occurred calls the method again
 			this.draw(g, imageObserver);
+		
 		}
 		
 	}
@@ -63,11 +63,21 @@ public class Garbage extends SquareInTheScreen{
 			this.blueGarbageImage = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
 			this.yellowGarbageImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
 		
-		} catch (IOException e) {
+		} 
+		catch (IOException e) {
 			e.printStackTrace();
 		
 		}
 		
+	}
+
+	// getters and setters
+	public Colors getColor() {
+		return this.color;
+	}
+
+	public void setColor(Colors color) {
+		this.color = color;
 	}
 
 }

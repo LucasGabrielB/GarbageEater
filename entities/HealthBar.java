@@ -15,22 +15,25 @@ public class HealthBar{
 	// constructor
 	public HealthBar(int size, int xPosition, int yPosition){
 		for(int i = 0; i < size; i++){
-			getHealthBar().add(new SquareInTheScreen());
-			getHealthBar().get(i).setX(xPosition);
-			getHealthBar().get(i).setY(yPosition);
+			getHealthBar().add(new SquareInTheScreen(xPosition, yPosition));
 			xPosition += 25;
 		}
+		
 	}
+	
 	// method to draw the hearts in the screen
 	public void draw(Graphics g){
 		try{
 			heartImg = ImageIO.read(getClass().getResourceAsStream("/images/heart.png"));
 			for (SquareInTheScreen heart : HealthBar) {
 				g.drawImage(heartImg, heart.getX(), heart.getY(), null);
+			
 			}
 		
-		}catch(IOException e){
+		}
+		catch(IOException e){
 			e.printStackTrace();
+		
 		}	
 	
 	}
@@ -40,22 +43,28 @@ public class HealthBar{
 		if(!getHealthBar().isEmpty()){
 			getHealthBar().remove(getHealthBar().size() - 1);
 			setHaveLife(true);
+		
 		}
 		else{
 			setHaveLife(false);
+		
 		}
+	
 	}
 	
 	private ArrayList<SquareInTheScreen> getHealthBar() {
 		return this.HealthBar;
+	
 	}
 
 	private void setHaveLife(boolean haveLife) {
 		this.haveLife = haveLife;
+	
 	}
 	
 	public boolean isHaveLife(){
 		return this.haveLife;
+	
 	}
 	
 }
