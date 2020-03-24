@@ -86,7 +86,7 @@ public class MenuScreen extends JPanel {
         }
         
         // play background music continuously
-        backgroundMusic = new SoundEffect("src/soundEffects/sounds/backgroundMusic.wav");
+        backgroundMusic = new SoundEffect("/soundEffects/sounds/backgroundMusic.wav");
         backgroundMusic.loop();
         
         // initializes all screen components

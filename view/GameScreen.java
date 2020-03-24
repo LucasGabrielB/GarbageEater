@@ -95,10 +95,10 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         }
 
         // initialize sounds
-        backgroundMusicSound = new SoundEffect("src/soundEffects/sounds/backgroundMusic.wav");
-        deathSound = new SoundEffect("src/soundEffects/sounds/death.wav");
-        eatSound = new SoundEffect("src/soundEffects/sounds/eat.wav");
-        wrongColorSound = new SoundEffect("src/soundEffects/sounds/wrongColor.wav");
+        backgroundMusicSound = new SoundEffect("/soundEffects/sounds/backgroundMusic.wav");
+        deathSound = new SoundEffect("/soundEffects/sounds/death.wav");
+        eatSound = new SoundEffect("/soundEffects/sounds/eat.wav");
+        wrongColorSound = new SoundEffect("/soundEffects/sounds/wrongColor.wav");
 
         // play background music continuously
         backgroundMusicSound.loop();

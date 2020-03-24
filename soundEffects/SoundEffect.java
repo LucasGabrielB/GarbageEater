@@ -1,9 +1,12 @@
 package soundEffects;
 
-import java.io.File;
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+
 
 public class SoundEffect {
 	// attributes
@@ -13,7 +16,10 @@ public class SoundEffect {
 	public SoundEffect(final String filePath){
 		try {
 			// open the audio file
-			AudioInputStream audio = AudioSystem.getAudioInputStream(new File(filePath));
+			InputStream audioSrc = getClass().getResourceAsStream(filePath);
+			InputStream bufferedIn = new BufferedInputStream(audioSrc);
+			AudioInputStream audio = AudioSystem.getAudioInputStream(bufferedIn);
+			
 			clip = AudioSystem.getClip();
 			clip.open(audio);
 			
