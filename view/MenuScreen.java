@@ -10,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,9 +18,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
-
 import database.DatabaseConnection;
 import entities.Player;
+import soundEffects.SoundEffect;
 
 public class MenuScreen extends JPanel {
 	
@@ -39,6 +38,9 @@ public class MenuScreen extends JPanel {
     private BufferedImage exitButtonImage;
     private BufferedImage helpButtonImage;
     private BufferedImage rankImage;
+    
+    // background music 
+    private SoundEffect backgroundMusic;
     
     // database connection
     private DatabaseConnection databaseConnection;
@@ -60,7 +62,7 @@ public class MenuScreen extends JPanel {
 			exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/exitButton.png"));
 			helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/helpButton.png"));
 			rankImage = ImageIO.read(getClass().getResourceAsStream("/images/rank.png"));
-		
+			
         } 
         
         catch (IOException e) {
@@ -82,6 +84,10 @@ public class MenuScreen extends JPanel {
             }
         
         }
+        
+        // play background music continuously
+        backgroundMusic = new SoundEffect("src/soundEffects/sounds/backgroundMusic.wav");
+        backgroundMusic.loop();
         
         // initializes all screen components
         initComponents();     
@@ -150,6 +156,7 @@ public class MenuScreen extends JPanel {
 					  player.setNickname(playerName);
 					  dispose();
 					  removeAll();
+					  backgroundMusic.stop();
 					  new ShowGameScreen(player, databaseConnection);
 				  }
 					

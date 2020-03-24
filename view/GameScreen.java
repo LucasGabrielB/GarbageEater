@@ -2,12 +2,15 @@ package view;
 
 import java.awt.Color;
 
+import entities.Colors;
 import entities.Direction;
 import entities.Garbage;
 import entities.HealthBar;
 import entities.Player;
 import entities.Snake;
 import entities.SnakeBodyPart;
+import soundEffects.SoundEffect;
+
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -58,6 +61,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     private BufferedImage deathReason2Image; // hits wall
     private BufferedImage deathReason3Image; // wrong color
     
+    // sound effects
+    private SoundEffect backgroundMusicSound;
+    private SoundEffect deathSound;
+    private SoundEffect eatSound;
+    private SoundEffect wrongColorSound;
+    
     // database connection
     private DatabaseConnection databaseConnection;
    
@@ -69,8 +78,6 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	addKeyListener(this);
         setPreferredSize(new Dimension(WIDTH, HEIGHT));
     	setVisible(true);
-        
-        start();
     	
         // load the images
         try {
@@ -81,9 +88,24 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			deathReason2Image = ImageIO.read(getClass().getResourceAsStream("/images/hitsWall.png"));
 			deathReason3Image = ImageIO.read(getClass().getResourceAsStream("/images/wrongColor.png"));
 			
-		} catch (IOException e) {
+		} 
+        catch (IOException e) {
 			e.printStackTrace();
-		}
+		
+        }
+
+        // initialize sounds
+        backgroundMusicSound = new SoundEffect("src/soundEffects/sounds/backgroundMusic.wav");
+        deathSound = new SoundEffect("src/soundEffects/sounds/death.wav");
+        eatSound = new SoundEffect("src/soundEffects/sounds/eat.wav");
+        wrongColorSound = new SoundEffect("src/soundEffects/sounds/wrongColor.wav");
+
+        // play background music continuously
+        backgroundMusicSound.loop();
+        
+    	// start the game
+        start();
+    
     }
    
     // method for create a new random garbage
@@ -98,11 +120,13 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
             if(xCoor == bodyPart.getX() && yCoor == bodyPart.getY()){
             	drawNewGarbage();
             	return;
-             }
+             
+            }
+    	
     	}
     	
-    	int type = random.nextInt(4);
-		this.garbage = new Garbage(xCoor, yCoor, type, SQUARESIZE);
+    	Colors color = Colors.getRandomColor();
+		this.garbage = new Garbage(xCoor, yCoor, color, SQUARESIZE);
 		this.garbageDelayTime = System.currentTimeMillis();
 		
     }
@@ -110,7 +134,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void start() {
     	// reset movement, set snake to move right
     	this.directions = new LinkedList<>();
-		directions.add(Direction.Right);
+		directions.add(Direction.RIGHT);
 		
 		// reset snake variables
     	this.xCoor = 5;
@@ -166,10 +190,11 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     public void tick() {
     	
     	// movement the snake
-    	snake.addBodyPart(xCoor, yCoor);	
+    	snake.addBodyPart(xCoor, yCoor);
     	if(snake.getLength() > snakeSize) {
     		snake.getBody().remove(0); 	
-        }
+        
+    	}
     	
     	// verify if the snake collects the garbage
     	if(xCoor == garbage.getX() && yCoor == garbage.getY()) {
@@ -182,59 +207,82 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     			
     			// verify if the player don't have life
     			if(!healthBar.isHaveLife()){
-        			stop(3);
+    				// play death sound play
+    				deathSound.play();
+        			
+    				stop(3);
         			return;
+    			
     			}
     			else{
-    				drawNewGarbage();
+    				// play wrong color sound
+        			wrongColorSound.play();
+    				
+        			drawNewGarbage();
+    			
     			}
+    		
     		}
     		else{ 
     			// if the color of the snake is the same of the garbage
+    			eatSound.play();
 	    		snakeSize++;
 	    		drawNewGarbage();
 	    		player.setScore(player.getScore() + 1);
+    		
     		}
+    	
     	}
     	
     	// verify if the snake hits her self
         for(int i = snake.getLength() - 2; i >= 0; i--) {
         	if(xCoor == snake.getBody().get(i).getX() && yCoor == snake.getBody().get(i).getY()) {
+        		// play death sound play
+    			deathSound.play();
+    			
     			stop(1);
     			break;
+        	
         	}
+        
         }
         
         // verify if the snake hits the walls
         if(xCoor < 0 || xCoor > 35 || yCoor < 5 || yCoor > 22){
-        	stop(2);
+        	// play death sound play
+			deathSound.play();
+        	
+			stop(2);
+        
         }
         
         // movement the snake
         Direction direction = directions.peekFirst();
         
         switch (direction) {
-		case Up:
-			yCoor--;
-			break;
-
-		case Down:
-			yCoor++;
-			break;
-			
-		case Right:
-			xCoor++;
-    		break;
-    		
-		case Left:
-			xCoor--;
-    		break;
-		}
+			case UP:
+				yCoor--;
+				break;
+	
+			case DOWN:
+				yCoor++;
+				break;
+				
+			case RIGHT:
+				xCoor++;
+	    		break;
+	    		
+			case LEFT:
+				xCoor--;
+	    		break;
+		
+        }
         
 		 // if more than one direction is in the queue, poll it to read new input
         if(directions.size() > 1) {
 			directions.poll();
-		}
+		
+        }
     	
     }
     
@@ -251,10 +299,12 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         g.setColor(new Color(62, 59, 53));
         for (int i = 0; i < WIDTH / SQUARESIZE; i++) {
             g.drawLine(i * SQUARESIZE, 0, i * SQUARESIZE, HEIGHT);
+        
         }
         
         for (int i = 0; i < HEIGHT / SQUARESIZE; i++) {
             g.drawLine(0, i * SQUARESIZE, WIDTH, i * SQUARESIZE);
+        
         }
         
         // draw the garbage in the screen
@@ -263,6 +313,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         // paint the snake
         for (SnakeBodyPart bodyPart : snake.getBody()) {
             bodyPart.draw(g, this);
+        
         }
         
         // draw header image
@@ -284,16 +335,19 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
         	if(deathReason == 1){
         		// hits own body
         		g.drawImage(deathReason1Image, 190, 192,this);
-        	}
+        	
+        	}    	
         	
         	else if(deathReason == 2){
         		// hits wall
         		g.drawImage(deathReason2Image, 200, 193,this);
+        	
         	}
         	
         	else if(deathReason == 3){
         		// wrong color
         		g.drawImage(deathReason3Image, 190, 193,this);
+        	
         	}
         
         }
@@ -308,26 +362,30 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 		switch(key){
 		
 			case KeyEvent.VK_RIGHT:				
-				if(last != Direction.Left && last != Direction.Right) {
-					directions.addLast(Direction.Right);
+				if(last != Direction.LEFT && last != Direction.RIGHT) {
+					directions.addLast(Direction.RIGHT);
+				
 				}	
 				break;
 			
 			case KeyEvent.VK_LEFT:			
-				if(last != Direction.Left && last != Direction.Right) {
-					directions.addLast(Direction.Left);
+				if(last != Direction.LEFT && last != Direction.RIGHT) {
+					directions.addLast(Direction.LEFT);
+				
 				}
 				break;
 				
 			case KeyEvent.VK_UP:		
-				if(last != Direction.Down && last != Direction.Up) {
-					directions.addLast(Direction.Up);
+				if(last != Direction.DOWN && last != Direction.UP) {
+					directions.addLast(Direction.UP);
+				
 				}
 				break;
 				
 			case KeyEvent.VK_DOWN:		
-				if(last != Direction.Down && last != Direction.Up) {
-					directions.addLast(Direction.Down);
+				if(last != Direction.DOWN && last != Direction.UP) {
+					directions.addLast(Direction.DOWN);
+				
 				}
 				break;
 				
@@ -335,6 +393,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				if(!running){
 					// restart the game
 					start();
+				
 				}
 				break;
 			
@@ -343,29 +402,28 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 					// back to main menu
 					removeAll();
 					dispose();
+					backgroundMusicSound.stop();
 					new ShowMenuScreen(this.player, this.databaseConnection);
+				
 				}
 				break;
 				
 			case KeyEvent.VK_Q:
-				// red
-				snake.setColor(0);
+				snake.setColor(Colors.RED);
 				break;
 			
 			case KeyEvent.VK_W:
-				// green
-				snake.setColor(1);
+				snake.setColor(Colors.GREEN);
 				break;
 				
 			case KeyEvent.VK_E:
-				// blue
-				snake.setColor(2);
+				snake.setColor(Colors.BLUE);
 				break;
 				
 			case KeyEvent.VK_R:
-				// yellow
-				snake.setColor(3);
+				snake.setColor(Colors.YELLOW);
 				break;
+		
 		}
 
 	}
@@ -382,6 +440,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 	public void dispose() {
 	    JFrame parent = (JFrame) this.getTopLevelAncestor();
 	    parent.dispose();
+	
 	}
 
 }
