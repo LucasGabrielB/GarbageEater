@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class Garbage extends SquareInTheScreen{
 	// attributes
-	private Colors color;
+	private RecycleBinColor color;
 	
 	// images
 	private BufferedImage redGarbageImage;
@@ -17,7 +17,7 @@ public class Garbage extends SquareInTheScreen{
 	private BufferedImage yellowGarbageImage;
 	
 	// constructor
-	public Garbage(int x, int y, Colors color, int squareSize) {
+	public Garbage(int x, int y, RecycleBinColor color, int squareSize) {
 		super(x, y, squareSize);
 		setColor(color);
 		openImages();
@@ -72,11 +72,11 @@ public class Garbage extends SquareInTheScreen{
 	}
 
 	// getters and setters
-	public Colors getColor() {
+	public RecycleBinColor getColor() {
 		return this.color;
 	}
 
-	public void setColor(Colors color) {
+	public void setColor(RecycleBinColor color) {
 		this.color = color;
 	}
 

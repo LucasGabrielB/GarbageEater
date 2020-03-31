@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class SnakeBodyPart extends SquareInTheScreen {
 	// attributes
-	private Colors color;
+	private RecycleBinColor color;
 	
 	// images
 	private BufferedImage redSnakeBodyPartImage;
@@ -17,7 +17,7 @@ public class SnakeBodyPart extends SquareInTheScreen {
 	private BufferedImage yellowSnakeBodyPartImage;
 	
 	// constructor
-	public SnakeBodyPart(int x, int y, int squareSize, Colors color){
+	public SnakeBodyPart(int x, int y, int squareSize, RecycleBinColor color){
 		super(x, y, squareSize);
 		setColor(color);
 		openImages();
@@ -73,12 +73,12 @@ public class SnakeBodyPart extends SquareInTheScreen {
 	}
 	
 	// getters and setters
-	public Colors getColor() {
+	public RecycleBinColor getColor() {
 		return this.color;
 	
 	}
 
-	public void setColor(Colors color) {
+	public void setColor(RecycleBinColor color) {
 		this.color = color;
 	}
 

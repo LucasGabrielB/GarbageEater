@@ -2,7 +2,7 @@ package view;
 
 import java.awt.Color;
 
-import entities.Colors;
+import entities.RecycleBinColor;
 import entities.Direction;
 import entities.Garbage;
 import entities.HealthBar;
@@ -126,7 +126,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
     	
     	}
     	
-    	Colors color = Colors.getRandomColor();
+    	RecycleBinColor color = RecycleBinColor.getRandomColor();
 		this.garbage = new Garbage(xCoor, yCoor, color, SQUARESIZE);
 		this.garbageDelayTime = System.currentTimeMillis();
 		
@@ -410,19 +410,19 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 				break;
 				
 			case KeyEvent.VK_Q:
-				snake.setColor(Colors.RED);
+				snake.setColor(RecycleBinColor.RED);
 				break;
 			
 			case KeyEvent.VK_W:
-				snake.setColor(Colors.GREEN);
+				snake.setColor(RecycleBinColor.GREEN);
 				break;
 				
 			case KeyEvent.VK_E:
-				snake.setColor(Colors.BLUE);
+				snake.setColor(RecycleBinColor.BLUE);
 				break;
 				
 			case KeyEvent.VK_R:
-				snake.setColor(Colors.YELLOW);
+				snake.setColor(RecycleBinColor.YELLOW);
 				break;
 		
 		}

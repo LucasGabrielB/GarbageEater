@@ -6,22 +6,22 @@ public class Snake {
 	// attributes
 	private ArrayList<SnakeBodyPart> body = new ArrayList<>();
 	private int squareSize;
-	private Colors color;
+	private RecycleBinColor color;
 
 	// constructor
 	public Snake(int squareSize){
 		setSquareSize(squareSize);
-		setColor(Colors.RED);
+		setColor(RecycleBinColor.RED);
 		
 	}
 	
 	// getters and setters
-	public Colors getColor() {
+	public RecycleBinColor getColor() {
 		return this.color;
 	
 	}
 
-	public void setColor(Colors color) {
+	public void setColor(RecycleBinColor color) {
 		this.color = color;
 		// change the color of all snake body parts
 		for(SnakeBodyPart bodyPart : getBody()){
