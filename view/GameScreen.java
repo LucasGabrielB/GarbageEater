@@ -88,6 +88,7 @@ public class GameScreen extends JPanel implements Runnable, KeyListener {
 			deathReason2Image = ImageIO.read(getClass().getResourceAsStream("/images/hitsWall.png"));
 			deathReason3Image = ImageIO.read(getClass().getResourceAsStream("/images/wrongColor.png"));
 			
+			
 		} 
         catch (IOException e) {
 			e.printStackTrace();

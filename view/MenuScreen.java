@@ -62,7 +62,7 @@ public class MenuScreen extends JPanel {
 			exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/exitButton.png"));
 			helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/helpButton.png"));
 			rankImage = ImageIO.read(getClass().getResourceAsStream("/images/rank.png"));
-			
+
         } 
         
         catch (IOException e) {

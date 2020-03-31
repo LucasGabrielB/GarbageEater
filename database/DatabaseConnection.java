@@ -1,26 +1,30 @@
 package database;
 
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
 import entities.Player;
 
 public class DatabaseConnection {
-	private final String url = "jdbc:sqlite:src/database/db/GarbageEater.db";
+	private final URL databaseFilePath =  this.getClass().getResource("db/GarbageEater.db");
+	private final String url = "jdbc:sqlite::resource:" + databaseFilePath;
 	private Connection connection;
 	private boolean connected;
 	
+	// constructor
 	public DatabaseConnection(){
+		// try connect to database
 		try {
+			Class.forName("org.sqlite.JDBC");
 			this.connection = getConnection();
 			this.connected = true;
 			
 		} 
-		catch (SQLException e) {
+		catch (Exception e) {
 			this.connected = false;
 			e.printStackTrace();
 		
