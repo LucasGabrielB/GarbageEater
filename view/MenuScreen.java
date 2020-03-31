@@ -70,18 +70,21 @@ public class MenuScreen extends JPanel {
 		
         }
         
-        rankTop10 = databaseConnection.getTop10();
-        
-        if(rankTop10.isEmpty()){
-        	rankTop10Text = "Erro:\n Impossivel conectar\n ao banco de dados!";
-        }
-        
-        else{
+        // try get the top 10 players
+        try {
+        	rankTop10 = databaseConnection.getTop10();
+        	
         	for(int i = 0; i < rankTop10.size() ; i++){
             	rankTop10Text += i+1 +"°  " 
             		+ rankTop10.get(i).getNickname() + " - " 
             		+ rankTop10.get(i).getScore() + "\n";
             }
+        
+        }
+        
+        // if something goes wrong it displays a message on the rank screen
+        catch(Exception e){
+        	rankTop10Text = "Erro:\n Impossivel conectar\n ao banco de dados!";
         
         }
         

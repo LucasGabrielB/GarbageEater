@@ -10,9 +10,7 @@ import java.util.ArrayList;
 import entities.Player;
 
 public class DatabaseConnection {
-	private final String url = "jdbc:postgresql://localhost:5432/GarbageEater";
-	private final String password = "yNBt3Vx4bm@_";
-	private final String user = "postgres";
+	private final String url = "jdbc:sqlite:src/database/db/GarbageEater.db";
 	private Connection connection;
 	private boolean connected;
 	
@@ -24,6 +22,7 @@ public class DatabaseConnection {
 		} 
 		catch (SQLException e) {
 			this.connected = false;
+			e.printStackTrace();
 		
 		}
 
@@ -73,9 +72,9 @@ public class DatabaseConnection {
 	}
 	
 	// method that return the top 10 players order by score
-	public ArrayList<Player> getTop10(){
+	public ArrayList<Player> getTop10() throws Exception{
 		// if database is not connected return a empty ArrayList
-		if(!connected) return new ArrayList<Player>();
+		if(!connected) throw new SQLException();
 		
 		try {
 			// sql query to return the top 10 players order by score in descend order
@@ -147,7 +146,7 @@ public class DatabaseConnection {
 	
 	// method to conecte to the database
 	private Connection getConnection() throws SQLException{
-		Connection connection = DriverManager.getConnection(url, user, password);
+		Connection connection = DriverManager.getConnection(url);
 		return connection;
 
 	} 
