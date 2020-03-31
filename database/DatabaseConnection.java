@@ -1,6 +1,5 @@
 package database;
 
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,7 +9,7 @@ import java.util.ArrayList;
 import entities.Player;
 
 public class DatabaseConnection {
-	private final URL databaseFilePath =  this.getClass().getResource("db/GarbageEater.db");
+	private final String databaseFilePath =  this.getClass().getResource("db/GarbageEater.db").toString();
 	private final String url = "jdbc:sqlite::resource:" + databaseFilePath;
 	private Connection connection;
 	private boolean connected;
