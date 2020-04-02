@@ -14,11 +14,11 @@ public class ShowGameScreen {
     	GameScreen gameScreen = new GameScreen(player, databaseConnection);
 		
     	frame = new JFrame();
+    	frame.setSize(725, 488);
     	frame.add(gameScreen);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setTitle("Garbage Eater");
     	frame.pack();
-    	frame.setSize(725, 488);
     	frame.setResizable(false);
     	frame.setLocationRelativeTo(null);
     	frame.setVisible(true); 

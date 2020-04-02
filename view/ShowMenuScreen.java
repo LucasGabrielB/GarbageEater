@@ -14,6 +14,7 @@ public class ShowMenuScreen {
 		MenuScreen menuScreen = new MenuScreen(player, databaseConnection);
     	
 		frame = new JFrame();
+		frame.setSize(725, 488);
     	frame.add(menuScreen);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setTitle("Garbage Eater");
