@@ -2,7 +2,7 @@ package main;
 
 import database.DatabaseConnection;
 import entities.Player;
-import view.ShowMenuScreen;
+import view.MenuScreen;
 
 public class Main {
 	
@@ -11,7 +11,7 @@ public class Main {
     	DatabaseConnection databaseConnection = new DatabaseConnection();
     	Player player = new Player("Digite seu nome aqui!");
     	
-    	new ShowMenuScreen(player, databaseConnection);
+    	new MenuScreen(player, databaseConnection);
     }
 
 }

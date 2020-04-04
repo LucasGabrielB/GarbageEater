@@ -15,11 +15,11 @@ public class WarningScreen extends JFrame{
 	// attributes
 	private String message;
 	
-	public WarningScreen(String title, String message) {
+	public WarningScreen(String message) {
+		this.message = message;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setPreferredSize(new Dimension(300, 130));
-		setTitle(title);
-		this.message = message;
+		setUndecorated(true);
 		setResizable(false);
 		setLayout(null); 
     	pack();
