@@ -11,7 +11,7 @@ import javax.sound.sampled.Clip;
 public class SoundEffect {
 	// attributes
 	private Clip clip;
-	
+
 	// constructor
 	public SoundEffect(final String filePath){
 		try {

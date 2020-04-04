@@ -1,6 +1,5 @@
 package entities;
 
-
 public class SquareInTheScreen {
 	// attributes
 	private int x;

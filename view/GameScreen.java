@@ -23,11 +23,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import database.DatabaseConnection;
  
-
-
 public class GameScreen {
 	// create the frame
 	private JFrame frame;
+	
+	// screen size constants
+	private final int SCREEN_WIDTH = 720, SCREEN_HEIGHT = 480;
     
 	public GameScreen(Player player, DatabaseConnection databaseConnection){
 		// create a new game screen	
@@ -35,7 +36,7 @@ public class GameScreen {
 		
     	frame = new JFrame();
     	frame.pack();
-    	frame.setSize(725, 488);
+    	frame.setSize(SCREEN_WIDTH + 5, SCREEN_HEIGHT + 8);
     	frame.add(showgameScreen);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setTitle("Garbage Eater");
@@ -49,8 +50,8 @@ public class GameScreen {
 		
 		private static final long serialVersionUID = 633444525002781659L;
 	
-		// screen size constants
-	    private static final int WIDTH = 720, HEIGHT = 480, SQUARESIZE = 20;
+		// square size constants
+	    private final int SQUARESIZE = 20;
 	    
 	    // create the snake
 	    private int xCoor, yCoor, snakeSize;
@@ -95,7 +96,7 @@ public class GameScreen {
 	    	this.player = player;
 	    	setFocusable(true);   	
 	    	addKeyListener(this);
-	        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+	        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 	    	setVisible(true);
 	    	
 	        // load the images
@@ -130,8 +131,8 @@ public class GameScreen {
 	   
 	    // method for create a new random garbage
 	    public void drawNewGarbage(){
-	    	int xCoor = random.nextInt(Math.round(WIDTH/SQUARESIZE));
-	    	int yCoor = random.nextInt(Math.round(HEIGHT/SQUARESIZE));
+	    	int xCoor = random.nextInt(Math.round(SCREEN_WIDTH/SQUARESIZE));
+	    	int yCoor = random.nextInt(Math.round(SCREEN_HEIGHT/SQUARESIZE));
 	    	if (yCoor < 6) yCoor = 6;
 	    	
 	    	// check if the garbage will spawn in a place where the snake is
@@ -310,20 +311,20 @@ public class GameScreen {
 	    public void paint(Graphics g) {
 	    	
 	    	// clear the screen
-	    	g.clearRect(0, 0, WIDTH+10, HEIGHT+10);
+	    	g.clearRect(0, 0, SCREEN_WIDTH+10, SCREEN_HEIGHT+10);
 	    	
 	    	// draw background image
 	      	g.drawImage(backgroundImage, 0, 40, this);
 	    	
 	    	// paint the lines 
 	        g.setColor(new Color(62, 59, 53));
-	        for (int i = 0; i < WIDTH / SQUARESIZE; i++) {
-	            g.drawLine(i * SQUARESIZE, 0, i * SQUARESIZE, HEIGHT);
+	        for (int i = 0; i < SCREEN_WIDTH / SQUARESIZE; i++) {
+	            g.drawLine(i * SQUARESIZE, 0, i * SQUARESIZE, SCREEN_HEIGHT);
 	        
 	        }
 	        
-	        for (int i = 0; i < HEIGHT / SQUARESIZE; i++) {
-	            g.drawLine(0, i * SQUARESIZE, WIDTH, i * SQUARESIZE);
+	        for (int i = 0; i < SCREEN_HEIGHT / SQUARESIZE; i++) {
+	            g.drawLine(0, i * SQUARESIZE, SCREEN_WIDTH, i * SQUARESIZE);
 	        
 	        }
 	        

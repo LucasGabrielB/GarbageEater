@@ -25,13 +25,16 @@ import soundEffects.SoundEffect;
 public class MenuScreen {
 	// create the frame
 	private JFrame frame;
+	
+	// screen size constants
+    private final int SCREEN_WIDTH = 720, SCREEN_HEIGHT = 480;
     
 	public MenuScreen(Player player, DatabaseConnection databaseConnection) {
 		// create a new menu screen
 		JPanelMenuScreen menuScreen = new JPanelMenuScreen(player, databaseConnection);
     	
 		frame = new JFrame();
-		frame.setSize(725, 488);
+		frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
     	frame.add(menuScreen);
     	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     	frame.setTitle("Garbage Eater");
@@ -45,9 +48,6 @@ public class MenuScreen {
 	public class JPanelMenuScreen extends JPanel {
 		
 		private static final long serialVersionUID = 1624753302264316845L;
-	
-		// screen size constants
-	    private static final int WIDTH = 720, HEIGHT = 480;
 	    
 	    // create the player
 	    private Player player;
@@ -73,7 +73,7 @@ public class MenuScreen {
 			this.player = player;
 			setFocusable(true);
 			setLayout(null); 
-	        setPreferredSize(new Dimension(WIDTH, HEIGHT));
+	        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 	        
 	        // read images
 	        try {
@@ -178,8 +178,6 @@ public class MenuScreen {
 					  else{
 						  player.setNickname(playerName);
 						  dispose();
-						  removeAll();
-						  backgroundMusic.stop();
 						  new GameScreen(player, databaseConnection);
 					  }
 						
@@ -218,6 +216,8 @@ public class MenuScreen {
 		public void dispose() {
 		    JFrame parent = (JFrame) this.getTopLevelAncestor();
 		    parent.dispose();
+		    removeAll();
+			backgroundMusic.stop();
 		}
 	
 	}
