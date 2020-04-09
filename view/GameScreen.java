@@ -48,8 +48,8 @@ public class GameScreen {
 	// game logic main class
 	public class JPanelGameScreen extends JPanel implements Runnable, KeyListener {
 		
-		private static final long serialVersionUID = 633444525002781659L;
-	
+		private static final long serialVersionUID = 5185200045295559812L;
+
 		// square size constants
 	    private final int SQUARESIZE = 20;
 	    
@@ -200,10 +200,11 @@ public class GameScreen {
 	            // if pass 100 milliseconds update game
 	            if (currentTime - delayTime >= 100){
 	            	delayTime = currentTime;
-	            	
 	    			tick();
-	    			repaint();
+	    			
 	            }
+	            
+	            repaint();
 	        }
 	    }
 	    

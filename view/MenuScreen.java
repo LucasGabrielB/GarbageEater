@@ -168,11 +168,11 @@ public class MenuScreen {
 					  
 					  // check if the player typed a name
 					  if(playerName.length() == 0 || playerNameTextField.getText().equals("Digite seu nome aqui!")){
-						  new WarningScreen("Digite um nome para o jogador!");
+						  new WarningScreen();
 					  }
 					  
 					  else if(playerName.length() > 15){
-						  new WarningScreen("Nome do jogador muito GRANDE!");
+						  new WarningScreen();
 					  }
 					  
 					  else{
@@ -188,6 +188,13 @@ public class MenuScreen {
 			exitButton.addActionListener(new ActionListener(){  
 				  public void actionPerformed(ActionEvent e){
 					  System.exit(0);  
+				  }
+			});
+			
+			// method if the exit button is pushed
+			helpButton.addActionListener(new ActionListener(){  
+				  public void actionPerformed(ActionEvent e){
+					  new HelpScreen(); 
 				  }
 			});
 			
