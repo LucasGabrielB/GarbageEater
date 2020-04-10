@@ -2,8 +2,6 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class SnakeBodyPart extends SquareInTheScreen {
@@ -11,65 +9,52 @@ public class SnakeBodyPart extends SquareInTheScreen {
 	private RecycleBinColor color;
 	
 	// images
-	private BufferedImage redSnakeBodyPartImage;
-	private BufferedImage greenSnakeBodyPartImage;
-	private BufferedImage blueSnakeBodyPartImage;
-	private BufferedImage yellowSnakeBodyPartImage;
+	private BufferedImage snakeBodyPartImage;
 	
 	// constructor
 	public SnakeBodyPart(int x, int y, int squareSize, RecycleBinColor color){
 		super(x, y, squareSize);
 		setColor(color);
-		openImages();
 	
 	}
 
+	public SnakeBodyPart(int x, int y, RecycleBinColor color){
+		super(x, y, 20);
+		setColor(color);
+	
+	}
+	
 	// draw the snake body part in the game screen
-	public void draw(Graphics g, ImageObserver imageObserver) {
-		
+	public void draw(Graphics g) {		
 		try{
 			switch (getColor()) {
 				case RED:
-					g.drawImage(this.redSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/redSnakeBodyPart.png"));
 					break;
 					
 				case GREEN:
-					g.drawImage(this.greenSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/greenSnakeBodyPart.png"));
 					break;
 				
 				case BLUE:
-					g.drawImage(this.blueSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/blueSnakeBodyPart.png"));
 					break;
 				
 				case YELLOW:
-					g.drawImage(this.yellowSnakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowSnakeBodyPart.png"));
 					break;	
 			
 			}
+			
+			g.drawImage(this.snakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
 		
 		} 
 		catch (Exception e) {
 			// if any error occurred calls the method again
-			this.draw(g, imageObserver);
+			this.draw(g);
 
 		}
     
-	}
-
-	// method to load snake body part images
-	public void openImages(){
-		try {
-			this.redSnakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/redSnakeBodyPart.png"));
-			this.greenSnakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/greenSnakeBodyPart.png"));
-			this.blueSnakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/blueSnakeBodyPart.png"));
-			this.yellowSnakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowSnakeBodyPart.png"));
-		
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		
-		}
-		
 	}
 	
 	// getters and setters

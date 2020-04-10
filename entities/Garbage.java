@@ -2,8 +2,6 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Garbage extends SquareInTheScreen{
@@ -11,65 +9,47 @@ public class Garbage extends SquareInTheScreen{
 	private RecycleBinColor color;
 	
 	// images
-	private BufferedImage redGarbageImage;
-	private BufferedImage greenGarbageImage;
-	private BufferedImage blueGarbageImage;
-	private BufferedImage yellowGarbageImage;
+	private BufferedImage garbageImage;
 	
 	// constructor
 	public Garbage(int x, int y, RecycleBinColor color, int squareSize) {
 		super(x, y, squareSize);
 		setColor(color);
-		openImages();
 	
 	}
 	
 	// method to draw the garbage in the game screen
-	public void draw(Graphics g, ImageObserver imageObserver){
-		
+	public void draw(Graphics g){	
 		try{
 			switch (getColor()) {
 				case RED:
-					g.drawImage(this.redGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/redGarbage.png"));
 					break;
 				
-				case GREEN:
-					g.drawImage(this.greenGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+				case GREEN:		
+					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/greenGarbage.png"));
 					break;
 				
-				case BLUE:
-					g.drawImage(this.blueGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+				case BLUE:	
+					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
 					break;
 				
 				case YELLOW:
-					g.drawImage(this.yellowGarbageImage, getX() * getSquareSize(), getY() * getSquareSize(), imageObserver);
+					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
 					break;
 	
 			}
+			
+			g.drawImage(this.garbageImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
+			
 		} 
 		catch (Exception e) {
 			// if any error occurred calls the method again
-			this.draw(g, imageObserver);
+			this.draw(g);
 		
 		}
 		
-	}
-	
-	// method to load the garbage images 
-	public void openImages(){
-		try {
-			this.redGarbageImage = ImageIO.read(getClass().getResourceAsStream("/images/redGarbage.png"));
-			this.greenGarbageImage = ImageIO.read(getClass().getResourceAsStream("/images/greenGarbage.png"));
-			this.blueGarbageImage = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
-			this.yellowGarbageImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
-		
-		} 
-		catch (IOException e) {
-			e.printStackTrace();
-		
-		}
-		
-	}
+	}	
 
 	// getters and setters
 	public RecycleBinColor getColor() {

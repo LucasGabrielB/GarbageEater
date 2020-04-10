@@ -8,7 +8,7 @@ import javax.imageio.ImageIO;
 
 public class HealthBar{
 	// attributes
-	private ArrayList<SquareInTheScreen> HealthBar = new ArrayList<>();
+	private ArrayList<SquareInTheScreen> healthBar = new ArrayList<>();
 	private BufferedImage heartImg;
 	private boolean haveLife;
 	
@@ -25,7 +25,8 @@ public class HealthBar{
 	public void draw(Graphics g){
 		try{
 			heartImg = ImageIO.read(getClass().getResourceAsStream("/images/heart.png"));
-			for (SquareInTheScreen heart : HealthBar) {
+			
+			for (SquareInTheScreen heart : healthBar) {
 				g.drawImage(heartImg, heart.getX(), heart.getY(), null);
 			
 			}
@@ -53,7 +54,7 @@ public class HealthBar{
 	}
 	
 	private ArrayList<SquareInTheScreen> getHealthBar() {
-		return this.HealthBar;
+		return this.healthBar;
 	
 	}
 

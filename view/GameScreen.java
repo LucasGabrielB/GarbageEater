@@ -161,7 +161,7 @@ public class GameScreen {
 	    	this.xCoor = 5;
 	    	this.yCoor = 5;
 	    	this.snakeSize = 3;
-	    	this.snake = new Snake(SQUARESIZE);
+	    	this.snake = new Snake();
 	    	
 	    	// reset player score
 	    	this.player.setScore(0);
@@ -201,10 +201,10 @@ public class GameScreen {
 	            if (currentTime - delayTime >= 100){
 	            	delayTime = currentTime;
 	    			tick();
+		            repaint();
 	    			
 	            }
 	            
-	            repaint();
 	        }
 	    }
 	    
@@ -330,11 +330,11 @@ public class GameScreen {
 	        }
 	        
 	        // draw the garbage in the screen
-	        garbage.draw(g, this);
+	        garbage.draw(g);
 	        
 	        // paint the snake
-	        for (SnakeBodyPart bodyPart : snake.getBody()) {
-	            bodyPart.draw(g, this);
+	        for (int i = 0, size = snake.getBody().size(); i < size; i++){
+	        	snake.getBody().get(i).draw(g);
 	        
 	        }
 	        

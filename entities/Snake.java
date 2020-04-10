@@ -5,12 +5,10 @@ import java.util.ArrayList;
 public class Snake {
 	// attributes
 	private ArrayList<SnakeBodyPart> body = new ArrayList<>();
-	private int squareSize;
 	private RecycleBinColor color;
 
 	// constructor
-	public Snake(int squareSize){
-		setSquareSize(squareSize);
+	public Snake(){
 		setColor(RecycleBinColor.RED);
 		
 	}
@@ -36,16 +34,6 @@ public class Snake {
 	
 	}
 	
-	public int getSquareSize() {
-		return this.squareSize;
-	
-	}
-
-	public void setSquareSize(int squareSize) {
-		this.squareSize = squareSize;
-	
-	}
-	
 	//  method that returns the snake size
 	public int getLength() {
 		return this.getBody().size();
@@ -54,7 +42,7 @@ public class Snake {
 	
 	// method to add a new BodyPart to the snake
 	public void addBodyPart(int x, int y){
-		getBody().add(new SnakeBodyPart(x, y, getSquareSize(), getColor()));
+		getBody().add(new SnakeBodyPart(x, y, getColor()));
 	
 	}
 
