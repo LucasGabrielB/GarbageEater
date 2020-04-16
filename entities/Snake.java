@@ -1,5 +1,6 @@
 package entities;
 
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class Snake {
@@ -10,6 +11,21 @@ public class Snake {
 	// constructor
 	public Snake(){
 		setColor(RecycleBinColor.RED);
+		
+	}
+	
+	// draw the snake in the screen
+	public void draw(Graphics g){
+		for (int i = 0; i < this.getBody().size(); i++){
+			this.getBody().get(i).draw(g);
+		
+		}
+		
+	}
+	
+	// method to add a new BodyPart to the snake
+	public void addBodyPart(int x, int y){
+			getBody().add(new SnakeBodyPart(x, y, getColor()));
 		
 	}
 	
@@ -37,12 +53,6 @@ public class Snake {
 	//  method that returns the snake size
 	public int getLength() {
 		return this.getBody().size();
-	
-	}
-	
-	// method to add a new BodyPart to the snake
-	public void addBodyPart(int x, int y){
-		getBody().add(new SnakeBodyPart(x, y, getColor()));
 	
 	}
 

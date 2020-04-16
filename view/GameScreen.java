@@ -2,6 +2,7 @@ package view;
 
 import java.awt.Color;
 import entities.RecycleBinColor;
+import entities.DeathReason;
 import entities.Direction;
 import entities.Garbage;
 import entities.HealthBar;
@@ -60,7 +61,7 @@ public class GameScreen {
 		// create the player
 	    private Player player;
 	    private HealthBar healthBar;
-	    private int deathReason;
+	    private DeathReason deathReason;
 		
 		// create the garbage
 	    private Garbage garbage;
@@ -174,7 +175,7 @@ public class GameScreen {
 	        thread.start();
 	    }
 	 
-	    public void stop(int deathReason) {
+	    public void stop(DeathReason deathReason) {
 	    	// post player in the database
 	    	DatabaseConnection.postPlayer(player);
 	    	
@@ -230,7 +231,7 @@ public class GameScreen {
 	    				// play death sound play
 	    				deathSound.play();
 	        			
-	    				stop(3);
+	    				stop(DeathReason.WRONG_COLOR);
 	        			return;
 	    			
 	    			}
@@ -260,7 +261,7 @@ public class GameScreen {
 	        		// play death sound play
 	    			deathSound.play();
 	    			
-	    			stop(1);
+	    			stop(DeathReason.HITS_OWN_BODY);
 	    			break;
 	        	
 	        	}
@@ -272,7 +273,7 @@ public class GameScreen {
 	        	// play death sound play
 				deathSound.play();
 	        	
-				stop(2);
+				stop(DeathReason.HITS_WALL);
 	        
 	        }
 	        
@@ -330,11 +331,7 @@ public class GameScreen {
 	        // draw the garbage in the screen
 	        garbage.draw(g);
 	        
-	        // paint the snake
-	        for (int i = 0, size = snake.getBody().size(); i < size; i++){
-	        	snake.getBody().get(i).draw(g);
-	        
-	        }
+	        snake.draw(g);
 	        
 	        // draw header image
 	        g.drawImage(headerImage, 0, 0, this);
@@ -352,22 +349,20 @@ public class GameScreen {
 	        if(!running) {
 	        	g.drawImage(deathImage, 180, 170, this);
 	        	
-	        	if(deathReason == 1){
-	        		// hits own body
-	        		g.drawImage(deathReason1Image, 190, 192,this);
+	        	switch(deathReason){
 	        	
-	        	}    	
-	        	
-	        	else if(deathReason == 2){
-	        		// hits wall
-	        		g.drawImage(deathReason2Image, 200, 193,this);
-	        	
-	        	}
-	        	
-	        	else if(deathReason == 3){
-	        		// wrong color
-	        		g.drawImage(deathReason3Image, 190, 193,this);
-	        	
+		        	case HITS_OWN_BODY:
+		        		g.drawImage(deathReason1Image, 190, 192,this);
+		        		break;
+		        	
+		        	case HITS_WALL:
+		        		g.drawImage(deathReason2Image, 200, 193,this);
+		        		break;
+		        	
+		        	case WRONG_COLOR:
+		        		g.drawImage(deathReason3Image, 190, 193,this);
+		        		break;
+		        	
 	        	}
 	        
 	        }
