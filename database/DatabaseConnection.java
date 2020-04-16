@@ -8,37 +8,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import entities.Player;
 
-public class DatabaseConnection {
-	private final String databaseFilePath =  this.getClass().getResource("db/GarbageEater.db").toString();
-	private final String url = "jdbc:sqlite::resource:" + databaseFilePath;
-	private Connection connection;
-	private boolean connected;
+public final class DatabaseConnection {
+	// temporary DatabaseConnection object use to get a safer class path 
+	private static final DatabaseConnection tempDBC = new DatabaseConnection();
+	private static final String databaseFilePath = tempDBC.getClass().getResource("db/GarbageEater.db").toString();
+	// database URL
+	private static final String url = "jdbc:sqlite::resource:" + DatabaseConnection.databaseFilePath;
 	
-	// constructor
-	public DatabaseConnection(){
-		// try connect to database
+	public static final void postPlayer(Player player){
 		try {
-			Class.forName("org.sqlite.JDBC");
-			this.connection = getConnection();
-			this.connected = true;
+			Connection connection = getConnection();
 			
-		} 
-		catch (Exception e) {
-			this.connected = false;
-			e.printStackTrace();
-		
-		}
-
-	}
-	
-	public void postPlayer(Player player){
-		// if database is not connected return
-		if (!connected) return;
-		
-		try {
-			if(playerExistInDatabase(player)){	
+			if(playerExistInDatabase(player, connection)){	
 				// if the current player's score is higher than the score saved in the bank
-				if(player.getScore() > getPlayerScore(player)){
+				if(player.getScore() > getPlayerScore(player, connection)){
 				
 					// sql query for update the player score
 					String sql = "update player set score = ? where nickname = ?";
@@ -48,7 +31,11 @@ public class DatabaseConnection {
 					
 					// execute sql query
 					statment.execute();
-
+				
+					// close connections
+					statment.close();
+					connection.close();
+					
 				}
 			
 			}
@@ -63,6 +50,10 @@ public class DatabaseConnection {
 				// execute sql query
 				statment.execute();
 			
+				// close connections
+				statment.close();
+				connection.close();
+				
 			}
 		
 		} 
@@ -75,43 +66,40 @@ public class DatabaseConnection {
 	}
 	
 	// method that return the top 10 players order by score
-	public ArrayList<Player> getTop10() throws Exception{
-		// if database is not connected return a empty ArrayList
-		if(!connected) throw new SQLException();
+	public static final ArrayList<Player> getTop10() throws Exception{
+
+		Connection connection = getConnection();
 		
-		try {
-			// sql query to return the top 10 players order by score in descend order
-			String sql = "select nickname, score from player order by score desc limit 10;";
-			PreparedStatement statment = connection.prepareStatement(sql);
-			
-			// execute sql query
-			statment.execute();
-			
-			// get the result of the query execution
-			ResultSet resultSet = statment.getResultSet();
-			
-			// create the ArrayList containing the players
-			ArrayList<Player> top10 = new ArrayList<Player>();
-			
-			// adds the 10 players to the array list
-			while(resultSet.next()){
-				Player player = new Player(resultSet.getString("nickname"), resultSet.getInt("score"));
-				top10.add(player);
-			}
-			
-			return top10;
-		} 
+		// sql query to return the top 10 players order by score in descend order
+		String sql = "select nickname, score from player order by score desc limit 10;";
+		PreparedStatement statment = connection.prepareStatement(sql);
 		
-		catch (SQLException e) {
-			e.printStackTrace();
-			// if any error happens it returns an empty ArrayList
-			return new ArrayList<Player>();
-		}	
+		// execute sql query
+		statment.execute();
+		
+		// get the result of the query execution
+		ResultSet resultSet = statment.getResultSet();
+		
+		// create the ArrayList containing the players
+		ArrayList<Player> top10 = new ArrayList<Player>();
+		
+		// adds the 10 players to the array list
+		while(resultSet.next()){
+			Player player = new Player(resultSet.getString("nickname"), resultSet.getInt("score"));
+			top10.add(player);
+		}
+		
+		// close connections
+		connection.close();
+		statment.close();
+		
+		return top10;
 		
 	}
 	
 	// method to verify if a player already exist in the database 
-	private boolean playerExistInDatabase(Player player) throws SQLException{
+	private static final boolean playerExistInDatabase(Player player, Connection connection) throws SQLException{
+		
 		// sql query for select the player score
 		String sql = "select nickname from player where nickname = ?;";
 		PreparedStatement statment = connection.prepareStatement(sql);
@@ -129,7 +117,8 @@ public class DatabaseConnection {
 	}
 	
 	// method to get the score of one player in the database
-	private int getPlayerScore(Player player) throws SQLException{
+	private static final int getPlayerScore(Player player, Connection connection) throws SQLException{
+		
 		// sql query for select the player score
 		String sql = "select score from player where nickname = ?;";
 		PreparedStatement statment = connection.prepareStatement(sql);
@@ -148,8 +137,8 @@ public class DatabaseConnection {
 	}
 	
 	// method to conecte to the database
-	private Connection getConnection() throws SQLException{
-		Connection connection = DriverManager.getConnection(url);
+	private static final Connection getConnection() throws SQLException{
+		Connection connection = DriverManager.getConnection(DatabaseConnection.url);
 		return connection;
 
 	} 

@@ -30,9 +30,9 @@ public class GameScreen {
 	// screen size constants
 	private final int SCREEN_WIDTH = 720, SCREEN_HEIGHT = 480;
     
-	public GameScreen(Player player, DatabaseConnection databaseConnection){
+	public GameScreen(Player player){
 		// create a new game screen	
-    	JPanelGameScreen showgameScreen = new JPanelGameScreen(player, databaseConnection);
+    	JPanelGameScreen showgameScreen = new JPanelGameScreen(player);
 		
     	frame = new JFrame();
     	frame.pack();
@@ -86,13 +86,9 @@ public class GameScreen {
 	    private SoundEffect deathSound;
 	    private SoundEffect eatSound;
 	    private SoundEffect wrongColorSound;
-	    
-	    // database connection
-	    private DatabaseConnection databaseConnection;
 	   
 	    // constructor
-	    public JPanelGameScreen(Player player, DatabaseConnection databaseConnection) {
-	    	this.databaseConnection = databaseConnection;
+	    public JPanelGameScreen(Player player) {
 	    	this.player = player;
 	    	setFocusable(true);   	
 	    	addKeyListener(this);
@@ -179,7 +175,9 @@ public class GameScreen {
 	    }
 	 
 	    public void stop(int deathReason) {
-	    	databaseConnection.postPlayer(player);
+	    	// post player in the database
+	    	DatabaseConnection.postPlayer(player);
+	    	
 	    	this.deathReason = deathReason;
 	    	this.running = false;
 	    }
@@ -425,7 +423,7 @@ public class GameScreen {
 						removeAll();
 						dispose();
 						backgroundMusicSound.stop();
-						new MenuScreen(this.player, this.databaseConnection);
+						new MenuScreen(this.player);
 					
 					}
 					break;

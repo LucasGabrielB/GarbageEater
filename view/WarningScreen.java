@@ -1,7 +1,6 @@
 package view;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -19,6 +18,8 @@ public class WarningScreen extends JFrame implements KeyListener{
 	
     // images
     private BufferedImage backgroundImage;
+    private BufferedImage okButtonImage;
+    
 	
 	public WarningScreen() {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -34,7 +35,8 @@ public class WarningScreen extends JFrame implements KeyListener{
     	
     	try {
 			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/warningScreenBackground.png"));
-		
+			okButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/okButton.png"));
+			
     	} 
     	catch (IOException e) {
 			e.printStackTrace();
@@ -51,11 +53,17 @@ public class WarningScreen extends JFrame implements KeyListener{
 		JLabel backgorundLabel = new JLabel(new ImageIcon(backgroundImage));
 		
 		// define components properties
-		okButton.setBounds(128, 93, 55, 30);
+		okButton.setBounds(115, 100, 70, 20);
 		backgorundLabel.setBounds(0, 0, 300, 130);
 		
-		setFont(new Font("arial", Font.PLAIN, 10));
-		okButton.setText("Ok");
+		// redimensionaste "OK" button image
+		ImageIcon okButtonIcon = new ImageIcon(okButtonImage);
+		okButtonIcon.setImage(okButtonIcon.getImage().getScaledInstance(70, 20, 1));
+		// add image to the button
+		okButton.setIcon(okButtonIcon);
+		okButton.setOpaque(false);
+		okButton.setContentAreaFilled(false);
+		okButton.setBorderPainted(false);
 		
 		// add the components in the screen
 		add(okButton);

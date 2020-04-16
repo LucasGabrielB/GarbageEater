@@ -29,9 +29,9 @@ public class MenuScreen {
 	// screen size constants
     private final int SCREEN_WIDTH = 720, SCREEN_HEIGHT = 480;
     
-	public MenuScreen(Player player, DatabaseConnection databaseConnection) {
+	public MenuScreen(Player player) {
 		// create a new menu screen
-		JPanelMenuScreen menuScreen = new JPanelMenuScreen(player, databaseConnection);
+		JPanelMenuScreen menuScreen = new JPanelMenuScreen(player);
     	
 		frame = new JFrame();
 		frame.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -62,14 +62,10 @@ public class MenuScreen {
 	    // background music 
 	    private SoundEffect backgroundMusic;
 	    
-	    // database connection
-	    private DatabaseConnection databaseConnection;
-	    
 	    private ArrayList<Player> rankTop10;
 	    private String rankTop10Text = "";
 		
-	    public JPanelMenuScreen(Player player, DatabaseConnection databaseConnection){
-	    	this.databaseConnection = databaseConnection;
+	    public JPanelMenuScreen(Player player){
 			this.player = player;
 			setFocusable(true);
 			setLayout(null); 
@@ -92,7 +88,7 @@ public class MenuScreen {
 	        
 	        // try get the top 10 players
 	        try {
-	        	rankTop10 = databaseConnection.getTop10();
+	        	rankTop10 = DatabaseConnection.getTop10();
 	        	
 	        	for(int i = 0; i < rankTop10.size() ; i++){
 		        	rankTop10Text += i+1 +"° ";
@@ -178,7 +174,7 @@ public class MenuScreen {
 					  else{
 						  player.setNickname(playerName);
 						  dispose();
-						  new GameScreen(player, databaseConnection);
+						  new GameScreen(player);
 					  }
 						
 				  }

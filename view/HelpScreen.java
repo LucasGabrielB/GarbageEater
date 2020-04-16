@@ -1,14 +1,12 @@
 package view;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,6 +18,7 @@ public class HelpScreen  extends JFrame implements KeyListener{
 	
 	// images
     private BufferedImage backgroundImage;
+    private BufferedImage okButtonImage;
 
 	public HelpScreen(){
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,7 +34,8 @@ public class HelpScreen  extends JFrame implements KeyListener{
     	
     	try {
 			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/helpScreenBackground.png"));
-		
+			okButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/okButton.png"));
+			
     	} 
     	catch (IOException e) {
 			e.printStackTrace();
@@ -52,12 +52,18 @@ public class HelpScreen  extends JFrame implements KeyListener{
 		JLabel backgorundLabel = new JLabel(new ImageIcon(backgroundImage));
 		
 		// define components properties
-		okButton.setBounds(295, 340, 55, 30);
+		okButton.setBounds(257, 335, 100, 40);
+		okButton.setOpaque(false);
+		okButton.setContentAreaFilled(false);
+		okButton.setBorderPainted(false);
 		backgorundLabel.setBounds(0, 0, 620, 380);
 		
-		setFont(new Font("arial", Font.PLAIN, 10));
-		okButton.setText("Ok");
-		
+		// redimensionaste "OK" button image
+		ImageIcon okButtonIcon = new ImageIcon(okButtonImage);
+		okButtonIcon.setImage(okButtonIcon.getImage().getScaledInstance(90, 30, 1));
+		// add image to the button
+		okButton.setIcon(okButtonIcon);
+	
 		// add the components in the screen
 		add(okButton);
 		add(backgorundLabel);
