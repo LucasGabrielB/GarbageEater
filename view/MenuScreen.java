@@ -91,7 +91,7 @@ public class MenuScreen {
 	        	rankTop10 = DatabaseConnection.getTop10();
 	        	
 	        	for(int i = 0; i < rankTop10.size() ; i++){
-		        	rankTop10Text += i+1 +"° "
+		        	rankTop10Text += i+1 +"Â° "
 		        				  + rankTop10.get(i).getNickname() + " - "
 		        				  + rankTop10.get(i).getScore() + "\n";
 	        	}
@@ -198,7 +198,7 @@ public class MenuScreen {
 			// to prevent the text from exceeding the limit size
 			playerNameTextField.addKeyListener(new KeyAdapter() {
 			    public void keyTyped(KeyEvent e) {
-			    	// if the text size is greater than 20 does t let the player type
+			    	// if the text size is greater than 15 does t let the player type
 			        if (playerNameTextField.getText().length() >= 15 )
 			            e.consume();
 			    }  
