@@ -91,8 +91,8 @@ public class MenuScreen {
 	        	rankTop10 = DatabaseConnection.getTop10();
 	        	
 	        	for(int i = 0; i < rankTop10.size() ; i++){
-		        	rankTop10Text += i+1 +"Â° "
-		        				  + rankTop10.get(i).getNickname() + " - "
+		        	rankTop10Text += i+1 +"°  "
+		        				  + rankTop10.get(i).getNickname() + "  - "
 		        				  + rankTop10.get(i).getScore() + "\n";
 	        	}
 	        
