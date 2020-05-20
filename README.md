@@ -5,7 +5,7 @@ Jogo de código aberto, sobre a licença [MIT](https://github.com/LucasGabrielB/
 
 ![tela do menu](https://user-images.githubusercontent.com/48874910/82405159-72ea6a00-9a39-11ea-95cd-173e58f00ba6.png)
 
-![tela do jogo](https://user-images.githubusercontent.com/48874910/82408618-5a328200-9a42-11ea-89d0-ca4d37982cb5.png)
+![tela do jogo](https://user-images.githubusercontent.com/48874910/82409009-315ebc80-9a43-11ea-8650-091255be7683.png)
 
 
 ## Sumário
