@@ -6,12 +6,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import main.Main.Sprites;
 
 public class HelpScreen  extends JFrame implements KeyListener{
 	private static final long serialVersionUID = -1333646209090714823L;
@@ -32,15 +31,8 @@ public class HelpScreen  extends JFrame implements KeyListener{
     	setFocusable(true);
     	addKeyListener(this);
     	
-    	try {
-			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/helpScreenBackground.png"));
-			okButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/okButton.png"));
-			
-    	} 
-    	catch (IOException e) {
-			e.printStackTrace();
-		
-    	}
+		backgroundImage = Sprites.getHelpScreenBackground();
+		okButtonImage = Sprites.getOkButton();
     	
     	// initializes all screen components
         initComponents();

@@ -2,9 +2,8 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
+import main.Main.Sprites;
 
 public class HealthBar{
 	// attributes
@@ -23,19 +22,13 @@ public class HealthBar{
 	
 	// method to draw the hearts in the screen
 	public void draw(Graphics g){
-		try{
-			heartImg = ImageIO.read(getClass().getResourceAsStream("/images/heart.png"));
-			
-			for (SquareInTheScreen heart : healthBar) {
-				g.drawImage(heartImg, heart.getX(), heart.getY(), null);
-			
-			}
+		
+		heartImg = Sprites.getHeart();
+		
+		for (SquareInTheScreen heart : healthBar) {
+			g.drawImage(heartImg, heart.getX(), heart.getY(), null);
 		
 		}
-		catch(IOException e){
-			e.printStackTrace();
-		
-		}	
 	
 	}
 	

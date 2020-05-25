@@ -9,6 +9,7 @@ import entities.HealthBar;
 import entities.Player;
 import entities.Snake;
 import entities.SnakeBodyPart;
+import main.Main.Sprites;
 import soundEffects.SoundEffect;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -16,10 +17,8 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import database.DatabaseConnection;
@@ -96,22 +95,14 @@ public class GameScreen {
 	        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 	    	setVisible(true);
 	    	
-	        // load the images
-	        try {
-				backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/gameScreenBackground.png"));
-				headerImage = ImageIO.read(getClass().getResourceAsStream("/images/gameScreenHeader.png"));
-				deathImage = ImageIO.read(getClass().getResourceAsStream("/images/gameOver.png"));
-				deathReason1Image = ImageIO.read(getClass().getResourceAsStream("/images/hitsOwnBody.png"));
-				deathReason2Image = ImageIO.read(getClass().getResourceAsStream("/images/hitsWall.png"));
-				deathReason3Image = ImageIO.read(getClass().getResourceAsStream("/images/wrongColor.png"));
-				
-				
-			} 
-	        catch (IOException e) {
-				e.printStackTrace();
-			
-	        }
-	
+	        // load images
+			backgroundImage = Sprites.getGameScreenBackground();
+			headerImage = Sprites.getGameScreenHeader();
+			deathImage = Sprites.getGameOver();
+			deathReason1Image = Sprites.getHitsOwnBody();
+			deathReason2Image = Sprites.getHitsWall();
+			deathReason3Image = Sprites.getWrongColor();
+
 	        // initialize sounds
 	        backgroundMusicSound = new SoundEffect("/soundEffects/sounds/backgroundMusic.wav");
 	        deathSound = new SoundEffect("/soundEffects/sounds/death.wav");

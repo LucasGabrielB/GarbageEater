@@ -8,9 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -20,6 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import database.DatabaseConnection;
 import entities.Player;
+import main.Main.Sprites;
 import soundEffects.SoundEffect;
 
 public class MenuScreen {
@@ -71,20 +70,12 @@ public class MenuScreen {
 			setLayout(null); 
 	        setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 	        
-	        // read images
-	        try {
-				backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/menuScreenBackground.png"));
-				startButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/startButton.png"));
-				exitButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/exitButton.png"));
-				helpButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/helpButton.png"));
-				rankImage = ImageIO.read(getClass().getResourceAsStream("/images/rank.png"));
-	
-	        } 
-	        
-	        catch (IOException e) {
-				e.printStackTrace();
-			
-	        }
+	        // get images
+			backgroundImage = Sprites.getMenuScreenBackground();
+			startButtonImage = Sprites.getStartButton();
+			exitButtonImage = Sprites.getExitButton();
+			helpButtonImage = Sprites.getHelpButton();
+			rankImage = Sprites.getRank();
 	        
 	        // try get the top 10 players
 	        try {

@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import main.Main.Sprites;
 
 public class Garbage extends SquareInTheScreen{
 	// attributes
@@ -20,34 +20,26 @@ public class Garbage extends SquareInTheScreen{
 	
 	// method to draw the garbage in the game screen
 	public void draw(Graphics g){	
-		try{
-			switch (getColor()) {
-				case RED:
-					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/redGarbage.png"));
-					break;
-				
-				case GREEN:		
-					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/greenGarbage.png"));
-					break;
-				
-				case BLUE:	
-					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/blueGarbage.png"));
-					break;
-				
-				case YELLOW:
-					this.garbageImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowGarbage.png"));
-					break;
-	
-			}
+		switch (getColor()) {
+			case RED:
+				this.garbageImage = Sprites.getRedGarbage();
+				break;
 			
-			g.drawImage(this.garbageImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
+			case GREEN:		
+				this.garbageImage = Sprites.getGreenGarbage();
+				break;
 			
-		} 
-		catch (Exception e) {
-			// if any error occurred calls the method again
-			this.draw(g);
-		
+			case BLUE:	
+				this.garbageImage = Sprites.getBlueGarbage();
+				break;
+			
+			case YELLOW:
+				this.garbageImage = Sprites.getYellowGarbage();
+				break;
+
 		}
+		
+		g.drawImage(this.garbageImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
 		
 	}	
 

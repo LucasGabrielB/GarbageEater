@@ -2,7 +2,7 @@ package entities;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
+import main.Main.Sprites;
 
 public class SnakeBodyPart extends SquareInTheScreen {
 	// attributes
@@ -26,35 +26,27 @@ public class SnakeBodyPart extends SquareInTheScreen {
 	
 	// draw the snake body part in the game screen
 	public void draw(Graphics g) {		
-		try{
-			switch (getColor()) {
-				case RED:
-					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/redSnakeBodyPart.png"));
-					break;
-					
-				case GREEN:
-					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/greenSnakeBodyPart.png"));
-					break;
+		switch (getColor()) {
+			case RED:
+				snakeBodyPartImage = Sprites.getRedSnakeBodyPart();
+				break;
 				
-				case BLUE:
-					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/blueSnakeBodyPart.png"));
-					break;
-				
-				case YELLOW:
-					snakeBodyPartImage = ImageIO.read(getClass().getResourceAsStream("/images/yellowSnakeBodyPart.png"));
-					break;	
+			case GREEN:
+				snakeBodyPartImage = Sprites.getGreenBodyPart();
+				break;
 			
-			}
+			case BLUE:
+				snakeBodyPartImage = Sprites.getBlueSnakeBodyPart();
+				break;
 			
-			g.drawImage(this.snakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
+			case YELLOW:
+				snakeBodyPartImage = Sprites.getYellowSnakeBodyPart();
+				break;	
 		
-		} 
-		catch (Exception e) {
-			// if any error occurred calls the method again
-			this.draw(g);
-
 		}
-    
+		
+		g.drawImage(this.snakeBodyPartImage, getX() * getSquareSize(), getY() * getSquareSize(), null);
+		
 	}
 	
 	// getters and setters

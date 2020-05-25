@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import main.Main.Sprites;
 
 public class WarningScreen extends JFrame implements KeyListener{
 	private static final long serialVersionUID = 1L;
@@ -33,15 +33,9 @@ public class WarningScreen extends JFrame implements KeyListener{
     	setFocusable(true);
     	addKeyListener(this);
     	
-    	try {
-			backgroundImage = ImageIO.read(getClass().getResourceAsStream("/images/warningScreenBackground.png"));
-			okButtonImage = ImageIO.read(getClass().getResourceAsStream("/images/okButton.png"));
+		backgroundImage = Sprites.getWarningScreenBackground();
+		okButtonImage = Sprites.getOkButton();
 			
-    	} 
-    	catch (IOException e) {
-			e.printStackTrace();
-		
-    	}
     	
     	// initializes all screen components
         initComponents();

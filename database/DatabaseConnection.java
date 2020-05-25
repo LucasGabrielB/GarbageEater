@@ -9,9 +9,8 @@ import java.util.ArrayList;
 import entities.Player;
 
 public final class DatabaseConnection {
-	// temporary DatabaseConnection object use to get a safer class path 
-	private static final DatabaseConnection tempDBC = new DatabaseConnection();
-	private static final String databaseFilePath = tempDBC.getClass().getResource("db/GarbageEater.db").toString();
+	// get the class path 
+	private static final String databaseFilePath = new DatabaseConnection().getClass().getResource("db/GarbageEater.db").toString();
 	// database URL
 	private static final String url = "jdbc:sqlite::resource:" + DatabaseConnection.databaseFilePath;
 	
